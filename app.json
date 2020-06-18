@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "pages/survey/survey",
+    "pages/survey-detail/survey-detail",
+    "pages/success/success",
+    "pages/survey-edit/survey-edit",
+    "pages/survey-summary/survey-summary",
+    "pages/text-summary/text-summary",
+    "pages/tab/tab"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "问卷调查",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

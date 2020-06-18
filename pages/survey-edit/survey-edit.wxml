@@ -1,0 +1,47 @@
+<wxs src="../../utils/filter.wxs" module="util" />
+
+<view hidden="{{isSuccess}}" class="container">
+  <view class="submit-result">{{message}}</view>
+  <view class="survey-container">
+    <view class="survey-name">{{survey.surveyName}}</view>
+    <view class="survey-notes" decode="{{true}}">{{util.format(survey.notes)}}</view>
+  </view>
+  <view class="titlelist-container">
+    <view class="title-container">
+      <block wx:for="{{survey.titleList}}" wx:for-item="title">
+        <view class="title">
+          <view wx:if="{{title.required=='1'}}">*</view>
+          <view>{{title.titleSequence}}、</view>
+          <view style="font-weight:bold;">{{title.title}}</view>
+          <view wx:if="{{title.titleType=='1'}}">（多选）</view>
+        </view>
+        <view wx:if="{{title.titleType=='0'}}">
+          <radio-group data-titleId="{{title.id}}" bind:change="radioChange">
+            <block wx:for="{{title.optionModelList}}" wx:for-item="option">
+              <view class="option">
+                <radio  value="{{option.id}}" checked="{{option.selected}}">{{option.optionName}}</radio> 
+              </view>            
+            </block>
+          </radio-group>
+        </view>
+        <view wx:elif="{{title.titleType=='1'}}">
+          <checkbox-group data-titleId="{{title.id}}" bind:change="checkboxChange">
+            <block wx:for="{{title.optionModelList}}" wx:for-item="option">
+              <view class="option">
+                <checkbox value="{{option.id}}" checked="{{option.selected}}">{{option.optionName}}</checkbox>
+              </view>
+            </block>
+          </checkbox-group>        
+        </view>
+        <view wx:elif="{{title.titleType=='2'}}">
+          <input data-titleId="{{title.id}}" bind:input="inputChange" class="text-input" placeholder="请填写">{{title.text}}</input>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class="submit {{submitBgColor}}" bind:tap="submit">{{submitText}}</view>
+</view>
+<view class="success" hidden="{{!isSuccess}}">
+  <image class="icon" src="../images/success.png"/>
+  <text>您已成功提交问卷，感谢您的参与！</text>
+</view>

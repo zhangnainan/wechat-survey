@@ -1,0 +1,124 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0rpx;
+}
+
+
+.nav{
+  padding-right: 100rpx;
+  padding-left: 100rpx;
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+ 
+}
+.icon{
+  position: absolute;
+  height: 60rpx;
+  width: 60rpx;
+  right: 100rpx;
+}
+
+.nav-item{
+  line-height: 90rpx;
+  margin: 0 20rpx;
+  font-size: 14px;
+}
+
+.is-active{
+  color: rgb(58, 168, 204);
+  border-bottom: 2px solid rgb(58, 168, 204);
+}
+
+.split-space{
+  width: 100%;
+  height: 30rpx;
+  background-color: lightgrey;
+}
+
+.sub-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.title-container{
+  padding: 30rpx;
+}
+
+.title{
+  display: flex;
+  flex-direction: row;
+  padding: 10rpx;
+}
+
+.option{
+  padding-left: 20rpx;
+}
+
+.myTable{
+  display: table;
+  border: 1px solid #eee;
+  border-radius: 10rpx;
+  width: 100%;
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.myThead{
+  display: table-header-group;
+}
+
+.myTr{
+  display: table-row;
+}
+
+.myTbody{
+  display: table-row-group;
+}
+
+.myTd{
+  display: table-cell;
+}
+
+.myThead > .myTr > .myTd{
+  padding: 8rpx 12rpx;
+  border: 1px solid #eee;
+  line-height: 60rpx;
+  font-size: 12px;
+  background: #f5f5f5;
+  white-space: nowrap;
+}
+
+.myTbody > .myTr > .myTd{
+  padding: 8rpx 20rpx;
+  border: 1px solid #eee;
+  line-height: 60rpx;
+  font-size: 12px;
+}
+.myTbody>.myTr:nth-child(even){
+  background: #f5f6f9;
+}
+
+.text-summary-link{
+  margin-bottom: 30rpx;
+  margin-top: 30rpx;
+  line-height: 60rpx;
+  font-size: 30rpx;
+  text-align: center;
+  color: rgb(58, 168, 204);
+  border: 1rpx solid  rgb(58, 168, 204);
+  border-radius: 10rpx;
+}
+
+
+
+
+
+
+

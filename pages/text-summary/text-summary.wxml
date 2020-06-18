@@ -1,0 +1,17 @@
+
+<view class="wrap">
+  <view class="myTable">
+    <view class="myThead">
+      <view class="myTr">
+        <view class="myTd">序号</view>
+        <view style="width: 88%;" class="myTd">答案文本</view>
+      </view>
+    </view>
+    <view class="myTbody">
+      <view class="myTr" wx:for="{{answerList}}" wx:for-item="submitAnswerItem">
+        <view class="myTd">{{index+1}}</view>
+        <view class="myTd">{{submitAnswerItem.answer}}</view>
+      </view>
+    </view>
+  </view>
+</view>

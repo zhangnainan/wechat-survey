@@ -1,0 +1,92 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rpx;
+}
+
+.survey-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  margin-top: 10rpx;
+}
+
+.survey-name{
+  color:rgb(58, 168, 204);
+  margin: 20rpx auto;
+  font-size: 38rpx;
+  font-weight: bold;
+}
+.survey-notes{
+  color: #999;
+  font-size: 30rpx;
+  margin-top: 60rpx;
+}
+
+.titlelist-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.title-container{
+  padding: 10rpx;
+}
+
+.title{
+  display: flex;
+  flex-direction: row;
+  padding: 10rpx;
+  margin-top: 50rpx;
+}
+
+.option{
+  padding-left: 20rpx;
+}
+
+.text-input{
+  border-bottom: 1rpx solid lightgrey;
+  padding-left: 20rpx;
+}
+
+.submit{
+  margin-top: 60rpx;
+  width: 95%;
+  height: 90rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 90rpx;
+  
+}
+
+.before-submit-bgcolor{
+  background-color: rgb(58, 168, 204);
+}
+.after-submit-bgcolor{
+  background-color: darkgrey;
+}
+
+.success{
+  width: 100%;
+  line-height: 100rpx;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50rpx;
+
+}
+
+.icon{
+  width: 50rpx;
+  height: 50rpx;
+}
+.success text{
+  color: rgb(58, 168, 204);
+  margin-left: 10rpx;
+}
+
+

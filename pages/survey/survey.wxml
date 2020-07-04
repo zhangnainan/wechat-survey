@@ -1,4 +1,4 @@
-<view class="container">
+<view wx:if="{{!isLoading}}" class="container">
   <block wx:for="{{surveyList}}">
     <view  data-survey="{{item}}"  bind:tap="onTap" class="item">
       <view class="left">
@@ -12,8 +12,9 @@
       </view>
     </view>
   </block>
+  <view class="submit {{submitBgColor}}" bind:tap="createNewSurveyTap">创建新问卷</view>
 </view>
-<view bind:tap="maskTap" class="mask" hidden="{{maskFlag}}">
+<view bind:tap="maskTap" class="mask" hidden="{{maskFlag}}"  catchtouchmove='ture'>
   <view class="mask-bottom">
     <view class="survey-title">
       <text>{{currentSurvey.surveyName}}</text>

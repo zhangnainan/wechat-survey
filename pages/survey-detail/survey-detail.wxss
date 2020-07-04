@@ -1,8 +1,10 @@
+
 .container{
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10rpx;
+  letter-spacing: 2rpx;
 }
 
 .survey-container{
@@ -19,16 +21,19 @@
   font-size: 38rpx;
   font-weight: bold;
 }
+
 .survey-notes{
   color: #999;
   font-size: 30rpx;
   margin-top: 60rpx;
+  padding: 20rpx;
 }
 
 .titlelist-container{
   display: flex;
   flex-direction: column;
   width: 100%;
+  align-items: flex-start;
 }
 
 .title-container{
@@ -40,10 +45,16 @@
   flex-direction: row;
   padding: 10rpx;
   margin-top: 50rpx;
+  font-size: 32rpx;
 }
 
 .option{
+  display: flex;
+  flex-direction: row;
   padding-left: 20rpx;
+  align-items: flex-start;
+  font-size: 30rpx;
+  line-height: 50rpx;
 }
 
 .text-input{
@@ -55,17 +66,17 @@
   margin-top: 60rpx;
   width: 95%;
   height: 90rpx;
-  border-radius: 10rpx;
+  border-radius: 30rpx;
   text-align: center;
   color: #ffffff;
   font-weight: bold;
   line-height: 90rpx;
-  
 }
 
 .before-submit-bgcolor{
-  background-color: rgb(58, 168, 204);
+  background-color: #3aa8cc;
 }
+
 .after-submit-bgcolor{
   background-color: darkgrey;
 }
@@ -77,16 +88,32 @@
   justify-content: center;
   align-items: center;
   margin-top: 50rpx;
-
 }
 
 .icon{
   width: 50rpx;
   height: 50rpx;
 }
+
 .success text{
   color: rgb(58, 168, 204);
   margin-left: 10rpx;
+}
+
+
+radio{
+
+  transform: scale(.6);
+}
+
+
+checkbox{
+  transform: scale(.6);
+}
+
+
+radio .wx-radio-input,checkbox .wx-checkbox-input{
+  flex: none;
 }
 
 

@@ -1,12 +1,15 @@
 {
   "pages": [
+    "pages/user/user",
     "pages/survey/survey",
     "pages/survey-detail/survey-detail",
     "pages/success/success",
     "pages/survey-edit/survey-edit",
     "pages/survey-summary/survey-summary",
     "pages/text-summary/text-summary",
-    "pages/tab/tab"
+    "pages/title-selection/title-selection",
+    "pages/text-name-statistics/text-name-statistics",
+    "pages/survey-create/survey-create"
   ],
   "window": {
     "backgroundTextStyle": "light",

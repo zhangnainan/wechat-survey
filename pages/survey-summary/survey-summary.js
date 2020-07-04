@@ -1,4 +1,4 @@
-import {SurveyModel} from '../../models/survey'
+import {SurveyModel} from '../../models/survey-p'
 let surveyModel = new SurveyModel();
 Page({
 
@@ -6,10 +6,15 @@ Page({
    * 页面的初始数据
    */
   data: {
+    surveyId : String,
     surveySummary : Object,
+    surveySubmitDetailList : Object,
+    surveyStatistics : Object,
     currentTab : 0,
-    summaryCountCls : "nav-item is-active",
-    summaryDetailCls:"nav-item"
+    unfoldInx: 0,
+    maskHiddenFlag:true,
+    statisticTitle : Object,
+    byNameStatistics : false
   },
 
   /**
@@ -17,11 +22,10 @@ Page({
    */
   onLoad: function (options){
     const surveyId = options.surveyId
-    surveyModel.getSurveySummary(surveyId,(res)=>{
-      this.setData({
-        surveySummary:res.data
-      })
+    this.setData({
+      surveyId
     })
+    this._getSurveySummary()
   },
   navItemTap : function(event){
     
@@ -29,7 +33,21 @@ Page({
     this.setData({
       currentTab : idx
     })
-    
+    if(this.data.currentTab == 0){
+      this._getSurveySummary()
+    }else{
+      this._getSurveySubmitDetail()
+    }
+  },
+  moreTap : function(event){
+    this.setData({
+      maskHiddenFlag:false
+    })
+  },
+  maskTap:function(event){
+    this.setData({
+      maskHiddenFlag:true
+    })
   },
   textSummaryViewTap : function(event){
     const answerList = event.target.dataset.answerlist
@@ -37,7 +55,92 @@ Page({
       url: `/pages/text-summary/text-summary?answerList=`+JSON.stringify(answerList)
     })
   },
+  textNameStatisticsTap : function(event){
+    const currentTapTitle = event.target.dataset.currenttaptitle
+    let data = {
+      'currentTapTitle' : currentTapTitle,
+      'statisticTitle' : this.data.statisticTitle
+    }
+    wx.navigateTo({
+      url: `/pages/text-name-statistics/text-name-statistics?params=`+JSON.stringify(data)
+    })
+  },
+  
+  nameSelectionTap : function(event){
+    wx.navigateTo({
+      url: '/pages/title-selection/title-selection?surveyId='+this.data.surveyId,
+    })
+  },
+  modifyConditionTap : function(event){
+    wx.navigateTo({
+      url: '/pages/title-selection/title-selection?surveyId='+this.data.surveyId,
+    })
+  },
+  clearConditionTap : function(event){
+    this.setData({
+      byNameStatistics : false
+    })
+    this._getSurveySummary()
+  },
 
+  openDetail: function(event){
+    this.setData({
+      unfoldInx: event.currentTarget.dataset.index
+    });
+  },
+  closeDetail: function (event) {
+    this.setData({
+      unfoldInx: -1
+    });
+  },
+  _getSurveySummary : function(){
+    surveyModel.getSurveySummary(this.data.surveyId).then(res=>{
+      this.setData({
+        surveySummary:res.data
+      })
+    })
+    /*
+    surveyModel.getSurveySummary(this.data.surveyId,(res)=>{
+      this.setData({
+        surveySummary:res.data
+      })
+    })
+    */ 
+  },
+  _getSurveySubmitDetail : function(){
+    surveyModel.getSurveySubmitDetail(this.data.surveyId).then(res=>{
+      this.setData({
+        surveySubmitDetailList:res.data
+      })
+    })
+    /*
+    surveyModel.getSurveySubmitDetail(this.data.surveyId,(res)=>{
+      this.setData({
+        surveySubmitDetailList:res.data
+      })
+    })
+    */
+  },
+  _getSurveyAll : function(){
+    
+    const statics = surveyModel.getSurveyStatics(this.data.surveyId,this.data.statisticTitle.id)
+    const submitDetail = surveyModel.getSurveySubmitDetail(this.data.surveyId)
+    const summary = surveyModel.getSurveySummary(this.data.surveyId)
+    Promise.all([statics,submitDetail,summary]).then(res=>{
+      console.log(res)
+      this.setData({
+        surveyStatistics : res[0].data,
+        surveySubmitDetailList : res[1].data,
+        surveySummary : res[2].data      
+      })
+    })
+    /*
+    surveyModel.getSurveyStatics(this.data.surveyId,this.data.statisticTitle.id,(res)=>{
+      this.setData({
+        surveyStatistics:res.data
+      })
+    })*/
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -49,7 +152,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.log('byNameStatistics')
+    if(this.data.byNameStatistics){
+      console.log(this.data.statisticTitle)
+      this._getSurveyAll()
+    }
   },
 
   /**

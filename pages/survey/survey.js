@@ -8,7 +8,9 @@ Page({
   data: {
     surveyList:[],
     maskFlag:true,
-    currentSurvey:Object
+    currentSurvey:Object,
+    submitBgColor : 'before-submit-bgcolor',
+    isLoading : true
   },
 
   /**
@@ -62,13 +64,20 @@ Page({
     })
   },
 
+  createNewSurveyTap : function(event){
+    wx.navigateTo({
+      url: `/pages/survey-create/survey-create`,
+    })
+  },
+
   deleteTap:function(event){
 
   },
   _getSurveyList : function(){
     surveyModel.getSurveyList((res)=>{
       this.setData({
-        surveyList:res.data
+        surveyList:res.data,
+        isLoading : false
       })
     })
   },
@@ -123,7 +132,7 @@ Page({
     console.log('onShareAppMessage')
     return {
       title:this.data.currentSurvey.surveyName,
-      imageUrl:'../survey/images/survey.png',
+      imageUrl:'../survey/images/survey1.png',
       path:'pages/survey-detail/survey-detail?surveyId='+this.data.currentSurvey.id
     }
   }

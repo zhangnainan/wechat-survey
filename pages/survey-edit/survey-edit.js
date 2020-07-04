@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    survey : Object
   },
 
   /**
@@ -16,11 +16,12 @@ Page({
     const surveyId = options.surveyId
     wx.showLoading()
     surveyModel.getSurvey(surveyId,(res)=>{
+      wx.hideLoading()
       this.setData({
         survey:res.data
       })
     })
-    wx.hideLoading()
+    
   },
 
   /**

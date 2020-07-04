@@ -45,7 +45,7 @@ page{
 }
 .openstate{
   font-size: 28rpx;
-  color: lightblue;
+  color: rgb(58, 168, 204);
 }
 .closestate{
   font-size:28rpx;
@@ -53,18 +53,38 @@ page{
 }
 
 .submitnum{
-  color: lightblue;
+  color: rgb(58, 168, 204);
+}
+
+
+.submit{
+  margin-top: 60rpx;
+  width: 95%;
+  height: 90rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 90rpx;
+  border-radius: 30rpx;
+}
+
+.before-submit-bgcolor{
+  background-color: rgb(58, 168, 204);
+}
+.after-submit-bgcolor{
+  background-color: darkgrey;
 }
 
 .mask{
   width: 100%;
   height: 100%;
-  background-color: #999;
+  background: rgba(153,153,153,0.6);
   top: 0;
   left: 0;
-  opacity: 0.5;
+/*  opacity: 0.5; */
   z-index: 9999;
-  position: absolute;
+  position: fixed;
 }
 .mask-bottom{
   height: 250rpx;
@@ -124,10 +144,9 @@ page{
   border: none;
 }
 
-
-
 .buttons view text{
   font-size: 30rpx;
   text-align: center;
   margin-top: 10rpx;
 }
+

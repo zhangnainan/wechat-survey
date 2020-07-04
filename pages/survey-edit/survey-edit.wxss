@@ -1,10 +1,154 @@
+page{
+  background-color: #f5f5f5;
+}
+
 .container{
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10rpx;
+  padding: 0rpx;
+  letter-spacing: 2rpx;
 }
 
+.survey-container{
+  padding: 30rpx 30rpx 0rpx 30rpx;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+.survey-name{
+  font-size: 35rpx;
+  font-weight: bold;
+  color:rgb(58, 168, 204);
+}
+
+.survey-notes{
+  color: #999;
+  font-size: 30rpx;
+  margin-top: 30rpx;
+}
+
+.survey-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9fdff;
+  margin-top: 30rpx;
+  margin-left: -30rpx;
+  margin-right: -30rpx;
+  height: 120rpx;
+}
+
+.button{
+  display: flex;
+  flex-direction: column;
+}
+.image{
+  width: 50rpx;
+  height: 50rpx;
+}
+.text{
+  font-size : 24rpx;
+  color: #999;
+  text-align: center;
+}
+
+.title-container{
+  width: 100%;
+  margin-top: 30rpx;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+/*
+.title{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}*/
+
+.title{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 30rpx;
+  padding: 30rpx;
+  align-items: flex-start;
+}
+
+.title-sequence-view{
+  height: 50rpx;
+  width: 60rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.title-name{
+  width: 90%;
+  line-height: 50rpx;
+}
+
+.require-flag{
+  width: 20rpx;
+}
+
+.title-sequence{
+  width:40rpx;
+}
+
+
+
+.option-container{
+  display: flex;
+  flex-direction: column;
+  padding: 0 30rpx 30rpx 30rpx;
+}
+
+.option{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.image-view{
+  height: 50rpx;
+  width: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.option-image{
+  height: 30rpx;
+  width: 30rpx;
+  margin-right: 20rpx;
+}
+
+.option-name{
+  width:  90%; 
+  font-size: 28rpx;
+  line-height: 52rpx;
+}
+
+.text-container{
+  padding: 0rpx 30rpx 30rpx 30rpx;
+}
+
+.text-image{
+  height: 50rpx;
+  width: 100%;
+}
+
+/*
 .survey-container{
   display: flex;
   flex-direction: column;
@@ -88,5 +232,5 @@
   color: rgb(58, 168, 204);
   margin-left: 10rpx;
 }
-
+*/
 

@@ -1,5 +1,5 @@
 <wxs src="../../utils/filter.wxs" module="util" />
-<view hidden="{{isSuccess}}" class="container">
+<view wx:if="{{!loading}}" hidden="{{isSuccess}}" class="container">
   <view class="submit-result">{{message}}</view>
   <view class="survey-container">
     <view class="survey-name">{{survey.surveyName}}</view>
@@ -9,17 +9,17 @@
     <view class="title-container">
       <block wx:for="{{survey.titleList}}" wx:for-item="title">
         <view class="title">
-          <view wx:if="{{title.required=='1'}}">*</view>
+          <view wx:if="{{title.required=='1'}}"><text decode="true">&nbsp;*&nbsp;</text></view>
           <view>{{title.titleSequence}}、</view>
-          <view style="font-weight:bold;">{{title.title}}</view>
-          <view wx:if="{{title.titleType=='1'}}">（多选）</view>
+          <view >{{title.title}}{{title.titleType == '1'?'（多选）':''}}</view>
         </view>
         <view wx:if="{{title.titleType=='0'}}">
-          <radio-group data-titleId="{{title.id}}" bind:change="radioChange">
+          <radio-group  data-titleId="{{title.id}}" bind:change="radioChange">
             <block wx:for="{{title.optionModelList}}" wx:for-item="option">
-              <view class="option">
-                <radio  value="{{option.id}}" checked="{{option.selected}}">{{option.optionName}}</radio> 
-              </view>            
+              <view class="option"> 
+                <radio  value="{{option.id}}" checked="{{option.selected}}" />
+                <text>{{option.optionName}}</text>
+              </view>           
             </block>
           </radio-group>
         </view>
@@ -27,7 +27,8 @@
           <checkbox-group data-titleId="{{title.id}}" bind:change="checkboxChange">
             <block wx:for="{{title.optionModelList}}" wx:for-item="option">
               <view class="option">
-                <checkbox value="{{option.id}}" checked="{{option.selected}}">{{option.optionName}}</checkbox>
+                <checkbox  value="{{option.id}}" checked="{{option.selected}}" />
+                <text>{{option.optionName}}</text>
               </view>
             </block>
           </checkbox-group>        

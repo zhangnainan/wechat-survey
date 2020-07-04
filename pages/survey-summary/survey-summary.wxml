@@ -1,60 +1,134 @@
 <wxs src="../../utils/filter.wxs" module="util" />
 <view class="container">
-  <view wx:if="{{currentTab == 0}}" class="nav">
+  <view class="nav" >
     <view class="nav-item {{currentTab==0?'is-active':''}}" bind:tap="navItemTap" data-idx="0">
       <text>结果统计</text>
     </view>
     <view class="nav-item {{currentTab==1?'is-active':''}}" bind:tap="navItemTap" data-idx="1">
       <text>答卷详情</text>
     </view>
-    <image class="icon" src="../survey-summary/images/more.png" />
-  </view>
-  <view wx:if="{{currentTab == 1}}" class="nav">
-    <view class="nav-item {{currentTab==0?'is-active':''}}" bind:tap="navItemTap" data-idx="0">
-      <text>结果统计</text>
-    </view>
-    <view class="nav-item {{currentTab==1?'is-active':''}}" bind:tap="navItemTap" data-idx="1">
-      <text>问卷详情</text>
-    </view>
-  </view>
+    <image wx:if="{{currentTab==0}}" bind:tap="moreTap" class="icon" src="../survey-summary/images/more.png" />
+  </view> 
   <view class="split-space"></view>
-  <view wx:if="{{currentTab == 0}}" class="sub-container">
+  <view wx:if="{{currentTab==0}}" class="sub-container">
+    <view class="submit-count">本次共收到<text style="color:rgb(58, 168, 204);" decode="true">&nbsp;&nbsp;{{surveySummary.submitSummaryModelList.length}}&nbsp;&nbsp;</text>份有效答卷</view>
+    <view wx:if="{{byNameStatistics}}" class="condition-container">
+      <view class="condition-title-container">
+        <view>筛选条件为：</view>
+        <view class="condition-title">{{statisticTitle.title}}</view>
+      </view>
+      <view class="condition-buttons-container">
+       <view bind:tap="modifyConditionTap" class="condition-button">修改条件</view>
+       <view bind:tap="clearConditionTap" class="condition-button">清除条件</view>
+      </view>
+    </view>
     <view class="title-container">
-      <block wx:for="{{surveySummary.titleList}}" wx:for-item="title">
-        <view class="title">
-          <view>{{title.titleSequence}}、</view>
-          <view style="font-weight:bold;">{{title.title}}</view>
-          <view wx:if="{{title.titleType=='0'}}"><text decode="{{true}}">&nbsp;&nbsp;[单选]</text></view>
-          <view wx:if="{{title.titleType=='1'}}"><text decode="{{true}}">&nbsp;&nbsp;[多选]</text></view>
-          <view wx:if="{{title.titleType=='2'}}"><text decode="{{true}}">&nbsp;&nbsp;[填空]</text></view>
-        </view>
-        <view wx:if="{{title.titleType=='0' || title.titleType == '1'}}" >
-          <view class="myTable">
-            <view class="myThead">
-                <view class="myTr">
-                  <view style="width: 50%;" class="myTd">选项</view>
-                  <view style="width: 25%;" class="myTd">小计</view>
-                  <view style="width: 25%;" class="myTd">比例</view>
-                </view>
-            </view>
-            <view class="myTbody">
-                <view class="myTr" wx:for="{{title.optionModelList}}" wx:for-item="option">
-                  <view class="myTd">{{option.optionName}}</view>
-                  <view class="myTd">{{option.submitCount}}</view>
-                  <view class="myTd">{{option.percent}}</view>
-                </view>
+      <view  wx:if="{{byNameStatistics}}">
+        <block wx:for="{{surveyStatistics.titleList}}" wx:for-item="title">
+          <view class="title">
+            <view>{{title.titleSequence}}、</view>
+            <view style="font-weight:bold;">{{title.title}}</view>
+            <view wx:if="{{title.titleType=='0'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;单选&nbsp;]</text></view>
+            <view wx:if="{{title.titleType=='1'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;多选&nbsp;]</text></view>
+            <view wx:if="{{title.titleType=='2'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;填空&nbsp;]</text></view>
+          </view>
+          <view wx:if="{{title.titleType=='0' || title.titleType == '1'}}" >
+            <view wx:for="{{title.optionModelList}}" wx:for-item="option">
+              <view>
+              </view>
+              <view class="option-title">选项{{index+1}}<text decode="true">&nbsp;:&nbsp;</text>{{option.optionName}}</view>
+              <!--
+              <view>{{option.submitCount}}</view>
+              <view>{{option.percent}}</view>-->
+              
+              <view  wx:if="{{option.nameList != null && option.nameList.length > 0}}" class="name-list">
+                <block wx:for="{{option.nameList}}" wx:for-item="name">
+                  <view wx:if="{{index == 0}}">{{name}}</view>
+                  <view wx:if="{{index > 0}}"><text style="color:#000;" decode="true">&nbsp;、&nbsp;</text>{{name}}</view>
+                </block>
+              </view>
             </view>
           </view>
-        </view>
-        <view wx:elif="{{title.titleType=='2'}}">
-          <view data-answerList="{{title.submitTitleAnswerModelList}}"  bind:tap="textSummaryViewTap" class="text-summary-link">
-            查看详细数据
+          <view wx:elif="{{title.titleType=='2'}}">
+            <view data-currentTapTitle="{{title}}"  bind:tap="textNameStatisticsTap" class="text-summary-link">
+              查看详细数据
+            </view>
           </view>
-        </view>
-      </block>
+        </block>
+      </view>
+      <view wx:else >
+        <block wx:for="{{surveySummary.titleList}}" wx:for-item="title">
+          <view class="title">
+            <view>{{title.titleSequence}}、</view>
+            <view style="font-weight:bold;">{{title.title}}</view>
+            <view wx:if="{{title.titleType=='0'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;单选&nbsp;]</text></view>
+            <view wx:if="{{title.titleType=='1'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;多选&nbsp;]</text></view>
+            <view wx:if="{{title.titleType=='2'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;填空&nbsp;]</text></view>
+          </view>
+          <view wx:if="{{title.titleType=='0' || title.titleType == '1'}}" >
+            <view class="myTable">
+              <view class="myThead">
+                  <view class="myTr">
+                    <view style="width: 50%;" class="myTd">选项</view>
+                    <view style="width: 25%;" class="myTd">小计</view>
+                    <view style="width: 25%;" class="myTd">比例</view>
+                  </view>
+              </view>
+              <view class="myTbody">
+                  <view class="myTr" wx:for="{{title.optionModelList}}" wx:for-item="option">
+                    <view class="myTd">{{option.optionName}}</view>
+                    <view class="myTd">{{option.submitCount}}</view>
+                    <view class="myTd">{{option.percent}}</view>
+                  </view>
+              </view>
+            </view>
+          </view>
+          <view wx:elif="{{title.titleType=='2'}}">
+            <view data-answerList="{{title.submitTitleAnswerModelList}}"  bind:tap="textSummaryViewTap" class="text-summary-link">
+              查看详细数据
+            </view>
+          </view>
+        </block>
+      </view>
     </view>
   </view>
   <view wx:if="{{currentTab == 1}}" class="sub-container">
-  
+    <block wx:for="{{surveySubmitDetailList}}" wx:for-item="surveySubmit">
+     <view wx:if="{{index > 0}}" class="list-split-space" />
+     <view style="background: #ffff; margin-bottom:20rpx;">
+        <view class="submit-list-item">
+          第{{index+1}}份问卷
+          <view data-index="{{index}}" bindtap="openDetail" style="float: right;">展开</view>
+        </view>
+        <view class="submit-titles-container" wx:if="{{index==unfoldInx}}">
+          <view>
+            <block wx:for="{{surveySubmit.titleList}}" wx:for-item="title">
+              <view class="submit-title">
+                {{title.titleSequence}}<text decode="true">&nbsp;.&nbsp;</text>{{title.title}}
+              </view>
+              <view class="submit-option" wx:if="{{title.titleType == '0' || title.titleType == '1'}}" >
+                <block wx:for="{{title.optionModelList}}" wx:for-item="option">
+                  <view wx:if="{{index == 0}}">{{option.optionName}}</view>
+                  <view wx:if="{{index > 0}}"><text style="color:#000;" decode="true">&nbsp;、&nbsp;</text> {{option.optionName}}</view>
+                </block>
+              </view>
+              <view class="submit-text" wx:if="{{title.titleType == '2'}}">
+                {{title.text}}
+              </view>
+            </block>
+          </view>
+          <view style="margin-top:30rpx;">
+            <view style="float: right; " data-index="{{index}}" bindtap="closeDetail">收起</view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<view bind:tap="maskTap" class="mask" hidden="{{maskHiddenFlag}}" catchtouchmove='ture'>
+  <view class="mask-bottom">
+    <view bind:tap="nameSelectionTap" class="bottom-item">按姓名进行统计</view>
+    <view class="bottom-split-line"></view>
+    <view class="bottom-item">取消</view>
   </view>
 </view>

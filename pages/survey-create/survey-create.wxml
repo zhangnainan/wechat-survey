@@ -1,0 +1,22 @@
+<view class="container">
+  <form style="width:100%">
+    <view class="sub-container">
+      <view class="tag">
+        <text decode="true" style="color:red;">&nbsp;*&nbsp;</text>
+        问卷名称：
+      </view>
+      <view class="survey-name">
+        <textarea bind:input="surveyNameInput" class="weui-textarea" maxlength="30" placeholder="请输入" class="surveyname-textarea"></textarea>
+      </view>
+    </view>
+
+    <view class="sub-container">
+      <view class="tag">备注：</view>
+      <view class="survey-notes">
+        <textarea bind:input="surveyNotesInput" class="weui-textarea" placeholder="请输入"  class="surveynotes-textarea" maxlength="500"></textarea>
+      </view>
+    </view>
+
+    <button disabled="{{disabled}}" style="width:100%" class="submit" bind:tap="saveSurveyTap">{{saveBtnText}}</button>
+  </form>
+</view>

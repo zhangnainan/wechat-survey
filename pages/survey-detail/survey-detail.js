@@ -10,7 +10,8 @@ Page({
     isSubmitted : false,
     submitBgColor:'before-submit-bgcolor',
     submitText:'提交',
-    isSuccess:false
+    isSuccess:false,
+    loading : true
   },
 
   /**
@@ -21,10 +22,12 @@ Page({
     wx.showLoading()
     surveyModel.getSurvey(surveyId,(res)=>{
       this.setData({
-        survey:res.data
+        survey:res.data,
+        loading : false
       })
+      wx.hideLoading()
     })
-    wx.hideLoading()
+   
   },
 
   radioChange:function(event){
@@ -109,6 +112,11 @@ Page({
       'message':''
     }
     const survey = this.data.survey
+    if( survey.titleList == null || survey.titleList.length == 0){
+      checkResult.isLegal = false
+      checkResult.message = '当前问卷没有题目可以作答！'
+      return checkResult;
+    }
     for(let i = 0; i < survey.titleList.length; i++){
       let title = survey.titleList[i]
       if(title.required == '0'){

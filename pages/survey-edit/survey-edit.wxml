@@ -1,5 +1,46 @@
 <wxs src="../../utils/filter.wxs" module="util" />
+<view class="container">
+  <view bind:tap class="survey-container">
+    <view class="survey-name">
+      {{survey.surveyName}}
+    </view>
+    <view class="survey-notes">
+      {{survey.notes == '' || survey.notes == null ?'添加备注':survey.notes}}
+    </view>
+    <view class="survey-buttons">
+      <view class="button">
+        <image class="image" src="../survey-edit/images/edit.png"></image>
+        <text class="text">编辑</text>
+      </view>
+    </view>
+  </view>
+  <block wx:for="{{survey.titleList}}" wx:for-item="title">
+    
+    <view class="title-container">
+      <view class="title">
+        <view class="title-sequence-view">
+          <view class="require-flag" wx:if="{{title.required=='1'}}"><text decode="true">*&nbsp;</text></view>
+          <view class="title-sequence">{{title.titleSequence}}、</view>
+        </view>
+        <view class="title-name">{{title.title}}{{title.titleType == '1'?'（多选）':''}}</view>
+        <!-- <view wx:if="{{title.titleType=='1'}}">（多选）</view> -->
+      </view>
+      <view class="option-container" wx:if="{{title.titleType =='0' || title.titleType == '1'}}">
+        <view wx:for="{{title.optionModelList}}" wx:for-item="option" class="option">
+          <view class="image-view">
+            <image class="option-image" src="{{title.titleType == '0' ? './images/radio.png' : './images/checkbox.png' }}"/>
+          </view>
+          <text class="option-name">{{option.optionName}}</text>
+        </view>
+      </view>
+      <view class="text-container"  wx:if="{{title.titleType=='2'}}">
+        <image class="text-image" src="./images/input.png" />
+      </view>
+    </view>
 
+  </block>
+</view>
+<!--
 <view hidden="{{isSuccess}}" class="container">
   <view class="submit-result">{{message}}</view>
   <view class="survey-container">
@@ -45,3 +86,4 @@
   <image class="icon" src="../images/success.png"/>
   <text>您已成功提交问卷，感谢您的参与！</text>
 </view>
+-->

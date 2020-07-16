@@ -1,24 +1,29 @@
-// pages/tab/tab.js
+// pages/text-name-statistics/text-name-statistics.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    curtab: 0
+    currentTapTitle : Object,
+    statisticTitle : Object
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-  },
-
-  changeTab: function(e){
+    wx.setNavigationBarTitle({
+      title: '问卷结果统计',
+    })
+    const params = JSON.parse(options.params)  
+    const currentTapTitle = params.currentTapTitle
+    const statisticTitle = params.statisticTitle
+   
     this.setData({
-      curtab: e.currentTarget.dataset.index
-    });
+      currentTapTitle,
+      statisticTitle
+    })
   },
 
   /**

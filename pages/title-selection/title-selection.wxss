@@ -1,0 +1,72 @@
+.container {
+ /* padding: 0 20rpx; */
+  background-color: #fff;
+  position: relative;
+  padding-top: 0rpx;
+}
+
+.select{
+  width: 90%;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  margin-top: 20rpx;
+/*  padding: 0 10rpx; */
+}
+
+.select_list {
+  background-color: #eee;
+ /* padding-left: 10rpx; */
+  width: 90%;
+  position: absolute;
+  top: 103rpx;
+  z-index: 1; 
+  overflow: hidden;
+/*  animation: myfirst 0.5s;*/
+}
+
+.text-padding{
+  padding : 0rpx 10rpx;
+}
+
+@keyframes myfirst {
+  from {
+      height: 0rpx;
+  }
+
+  to {
+      height: 210rpx;
+  }
+}
+
+.select_item {
+  height: 80rpx;
+  line-height: 80rpx;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #ccc;
+}
+
+.tip{
+  color: #ccc;
+}
+
+.submit{
+  margin-top: 60rpx;
+  width: 90%;
+  height: 80rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 80rpx;
+}
+
+.before-submit-bgcolor{
+  background-color: rgb(58, 168, 204);
+}
+.after-submit-bgcolor{
+  background-color: darkgrey;
+}

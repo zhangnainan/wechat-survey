@@ -21,6 +21,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options){
+    wx.setNavigationBarTitle({
+      title: '问卷调查结果',
+    })
     const surveyId = options.surveyId
     this.setData({
       surveyId
@@ -98,6 +101,16 @@ Page({
       this.setData({
         surveySummary:res.data
       })
+    },res=>{
+      wx.showToast({
+        title: '发生了一个错误，请联系管理员',
+        icon : 'none'
+      })
+      /*
+      this.setData({
+        disabled : false,
+        add_btn_text : '保 存'
+      })*/
     })
     /*
     surveyModel.getSurveySummary(this.data.surveyId,(res)=>{
@@ -112,6 +125,17 @@ Page({
       this.setData({
         surveySubmitDetailList:res.data
       })
+    },res=>{
+      wx.showToast({
+        title: '发生了一个错误，请联系管理员',
+        icon : 'none'
+      })
+      /*
+      this.setData({
+        disabled : false,
+        add_btn_text : '保 存'
+      })
+      */
     })
     /*
     surveyModel.getSurveySubmitDetail(this.data.surveyId,(res)=>{
@@ -127,12 +151,21 @@ Page({
     const submitDetail = surveyModel.getSurveySubmitDetail(this.data.surveyId)
     const summary = surveyModel.getSurveySummary(this.data.surveyId)
     Promise.all([statics,submitDetail,summary]).then(res=>{
-      console.log(res)
       this.setData({
         surveyStatistics : res[0].data,
         surveySubmitDetailList : res[1].data,
         surveySummary : res[2].data      
       })
+    },res=>{
+      wx.showToast({
+        title: '发生了一个错误，请联系管理员',
+        icon : 'none'
+      })
+      /*
+      this.setData({
+        disabled : false,
+        add_btn_text : '保 存'
+      })*/
     })
     /*
     surveyModel.getSurveyStatics(this.data.surveyId,this.data.statisticTitle.id,(res)=>{

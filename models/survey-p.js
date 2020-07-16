@@ -14,6 +14,14 @@ class SurveyModel extends HTTP{
     })
   }
 
+  deleteSurvey(surveyId){
+    return this.request({
+      url:'survey/delete/survey',
+      data:{'surveyId':surveyId},
+      method : 'DELETE'
+    })
+  }
+
   submitSurvey(survey){
     return this.request({
       url:'survey/submit/survey',
@@ -54,6 +62,14 @@ class SurveyModel extends HTTP{
         'surveyName' : surveyName,
         'notes' : surveyNotes
       },
+      method : 'POST'
+    })
+  }
+
+  updateSurvey(survey){
+    return this.request({
+      url : 'survey/update/survey',
+      data : survey,
       method : 'POST'
     })
   }

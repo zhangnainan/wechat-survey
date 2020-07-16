@@ -1,33 +1,15 @@
-import {HTTP} from '../utils/http.js'
+import {HTTP} from '../utils/http-p.js'
 
 class UserModel extends HTTP{
-  login(username,password,sCallback){
-    this.request({
+  login(username,password){
+    return this.request({
+      url:'user/login',
       data : {
         'username' : username,
         'password' : password
-      },
-      url:'user/login',
-      success : (res)=>{
-        sCallback(res)
       }
     })
   }
-
-  submitSurvey(survey,sCallback,fCallBack){
-    this.request({
-      url:'submit/survey',
-      method:'POST',
-      data:survey,
-      success:(res)=>{
-        sCallback(res)
-      },
-      fail:(err)=>{
-        fCallBack(err)
-      }
-    })
-  }
-
 }
 
 export{UserModel}

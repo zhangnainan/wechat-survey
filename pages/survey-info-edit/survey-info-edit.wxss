@@ -1,0 +1,64 @@
+.container{
+  padding: 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.sub-container{
+  width: 100%;
+  margin-top: 30rpx;
+}
+
+.tag{
+  width: 100%;
+  font-size: 32rpx;
+}
+
+.survey-name{
+  margin-top: 20rpx;
+  width: 100%;
+}
+
+.surveyname-textarea{
+  width: 100%;
+  padding: 10rpx;
+  border: 1px solid #999;
+  height: 70rpx;
+  line-height: 30rpx;
+  font-size: 30rpx;
+  border-radius: 20rpx;
+  box-sizing: border-box;
+  vertical-align: center;
+}
+
+.survey-notes{
+  margin-top: 20rpx;
+  width: 100%;
+}
+
+.surveynotes-textarea{
+  width: 100%;
+  padding: 10rpx;
+  border: 1px solid #999;
+  height: 350rpx;
+  line-height: 30rpx;
+  font-size: 30rpx;
+  border-radius: 20rpx;
+  box-sizing: border-box;
+}
+
+.submit{
+  margin-top: 60rpx;
+  width: 100%;
+  height: 90rpx;
+  border-radius: 10rpx;
+  text-align: center;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 90rpx;
+  border-radius: 30rpx;
+  background-color:#3aa8cc;
+  padding : 0rpx;
+}
+

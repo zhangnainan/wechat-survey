@@ -1,4 +1,4 @@
-import {SurveyModel} from '../../models/survey'
+import {SurveyModel} from '../../models/survey-p'
 let surveyModel = new SurveyModel();
 Page({
 
@@ -18,8 +18,37 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '',
+    })
     const surveyId = options.surveyId
     wx.showLoading()
+    surveyModel.getSurvey(surveyId).then(res=>{
+      wx.hideLoading()
+      let message = res.message
+      if(message == 'success'){
+        wx.setNavigationBarTitle({
+          title: res.data.surveyName,
+        })
+        this.setData({
+          survey:res.data,
+          loading : false
+        })
+      }else{
+        wx.showToast({
+          title: '服务端发生了错误',
+        })
+        this.setData({
+          loading : false
+        })
+      }
+    },res=>{
+      wx.hideLoading()
+      wx.showToast({
+        title: '发生了一个错误,请联系管理员',
+      })
+    })
+    /*
     surveyModel.getSurvey(surveyId,(res)=>{
       this.setData({
         survey:res.data,
@@ -27,7 +56,7 @@ Page({
       })
       wx.hideLoading()
     })
-   
+   */
   },
 
   radioChange:function(event){
@@ -158,7 +187,39 @@ Page({
       submitText:'提交中...',
       isSubmitted:true
     })
-    
+    wx.showLoading({
+      title : '提交中...'
+    })
+    surveyModel.submitSurvey(this.data.survey).then(res=>{
+      wx.hideLoading()
+      if(res.message != 'success'){
+        wx.showToast({
+          title: res.message,
+          icon:'none'
+        })
+        this.setData({
+          submitBgColor:'before-submit-bgcolor',
+          submitText : '提交',
+          isSubmitted : false
+        })
+        
+      }else{
+        this.setData({
+          isSuccess : true
+        })
+      }
+    },res=>{
+      wx.hideLoading()
+      wx.showToast({
+        title: '发生了一个错误,请联系管理员',
+      })
+      this.setData({
+        submitBgColor:'before-submit-bgcolor',
+        submitText : '提交',
+        isSubmitted : false
+      })
+    })
+    /*
     surveyModel.submitSurvey(this.data.survey,(res)=>{
       console.log(res)
       if(res.message != 'success'){
@@ -185,7 +246,7 @@ Page({
         submitText : '提交',
         isSubmitted : false
       })
-    })
+    })*/
   },
 
   /**

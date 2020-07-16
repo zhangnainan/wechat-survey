@@ -41,7 +41,6 @@ page{
   margin-right: -30rpx;
   height: 120rpx;
 }
-
 .button{
   display: flex;
   flex-direction: column;
@@ -148,89 +147,83 @@ page{
   width: 100%;
 }
 
-/*
-.survey-container{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-  margin-top: 10rpx;
-}
-
-.survey-name{
-  color:rgb(58, 168, 204);
-  margin: 20rpx auto;
-  font-size: 38rpx;
-  font-weight: bold;
-}
-.survey-notes{
-  color: #999;
-  font-size: 30rpx;
-  margin-top: 60rpx;
-}
-
-.titlelist-container{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.title-container{
-  padding: 10rpx;
-}
-
-.title{
+.title-buttons{
   display: flex;
   flex-direction: row;
-  padding: 10rpx;
-  margin-top: 50rpx;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #f9fdff;
+  margin-top: 30rpx;
+  margin-left: -30rpx;
+  margin-right: -30rpx;
+  height: 120rpx;
+  padding-right: 30rpx;
 }
 
-.option{
-  padding-left: 20rpx;
+.title-buttons > .button{
+  margin-right: 30rpx;
 }
 
-.text-input{
-  border-bottom: 1rpx solid lightgrey;
-  padding-left: 20rpx;
+.selected-container-border{
+  border: 1px solid rgb(58, 168, 204);
 }
 
-.submit{
+.add-btn{
   margin-top: 60rpx;
+  margin-bottom: 60rpx;
   width: 95%;
   height: 90rpx;
-  border-radius: 10rpx;
+  border-radius: 30rpx;
   text-align: center;
   color: #ffffff;
   font-weight: bold;
   line-height: 90rpx;
-  
+  background-color: #3aa8cc;
 }
 
-.before-submit-bgcolor{
-  background-color: rgb(58, 168, 204);
-}
-.after-submit-bgcolor{
-  background-color: darkgrey;
-}
-
-.success{
+.mask{
   width: 100%;
-  line-height: 100rpx;
-  display: inline-flex;
-  justify-content: center;
+  height: 100%;
+  background: rgba(153,153,153,0.6);
+  top: 0;
+  left: 0;
+/*  opacity: 0.5; */
+  z-index: 9999;
+  position: fixed;
+}
+.mask-bottom{
+  height: 250rpx;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-top: 50rpx;
-
+  width: 100%;
+  position: absolute;
+  bottom: 0rpx;
+  background-color: #ffffff;
 }
 
-.icon{
-  width: 50rpx;
-  height: 50rpx;
-}
-.success text{
-  color: rgb(58, 168, 204);
-  margin-left: 10rpx;
-}
-*/
 
+.buttons{
+  position: absolute;
+  bottom: 0rpx;
+  background-color: #ffffff;
+  height: 200rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.buttons view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  letter-spacing: 4rpx;
+  font-size: 32rpx;
+}
+.buttons view image{
+  width: 80rpx;
+  height: 80rpx;
+}

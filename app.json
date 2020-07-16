@@ -9,12 +9,15 @@
     "pages/text-summary/text-summary",
     "pages/title-selection/title-selection",
     "pages/text-name-statistics/text-name-statistics",
-    "pages/survey-create/survey-create"
+    "pages/survey-create/survey-create",
+    "pages/title-create/title-create",
+    "pages/title-edit/title-edit",
+    "pages/survey-info-edit/survey-info-edit"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "问卷调查",
+    "navigationBarTitleText": "",
     "navigationBarTextStyle": "black"
   },
   "style": "v2",

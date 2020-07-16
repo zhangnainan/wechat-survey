@@ -10,6 +10,30 @@ class TitleModel extends HTTP{
       }
     })
   }
+
+  saveTitleModel(title){
+    return this.request({
+      url : 'title/save',
+      data :title,
+      method : 'POST'
+    })
+  }
+
+  updateTitleModel(title){
+    return this.request({
+      url : 'title/update',
+      data :title,
+      method : 'POST'
+    })
+  }
+
+  deleteTitleModel(title){
+    return this.request({
+      url : 'title/delete',
+      data : title,
+      method : 'DELETE'
+    })
+  }
   /*
   getTextTitleList(surveyId,sCallback){
     this.request({

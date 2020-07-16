@@ -6,7 +6,7 @@
   </view>  
   -->
   <view class="login-from">  
-    <form bindsubmit="loginSubmit" class='form'>
+    <form bind:submit="loginSubmit" class='form'>
       <view class="myno">
       <!-- 用户名 -->
         <view class="weui-cell weui-cell_input cell-padding">

@@ -1,0 +1,121 @@
+page{
+  background-color: #f5f5f5;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0rpx;
+  letter-spacing: 2rpx;
+}
+
+.form{
+  width: 100%;
+}
+
+.title-name-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
+  background-color: #ffffff;
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+
+.title-name-label{
+  width: 100%;
+  font-size: 30rpx;
+}
+
+.title-name{
+  margin-top: 20rpx;
+  width: 100%;
+}
+
+.titlename-textarea{
+  width: 100%;
+  padding: 10rpx;
+  border: 1px solid #999;
+  height: 70rpx;
+  line-height: 50rpx;
+  font-size: 30rpx;
+  border-radius: 20rpx;
+  box-sizing: border-box;
+
+}
+
+.label{
+  padding: 30rpx 30rpx 10rpx 30rpx;
+  width: 100%;
+  font-size: 30rpx;
+}
+
+.option-container,.setting-container{
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+
+.option{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #999;
+  height: 70rpx;
+  margin-bottom: 30rpx;
+}
+
+.image-delete,.image-add{
+  height: 40rpx;
+  width: 40rpx;
+}
+
+.option-input{
+  flex: 1;
+  margin-left: 30rpx;
+}
+
+.add{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 70rpx;
+}
+
+.text-add{
+  font-size: 30rpx;
+  margin-left: 15rpx;
+  color: #3aa8cc;
+}
+
+.setting{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #999;
+  height: 70rpx;
+  margin-bottom: 30rpx;
+}
+
+switch{
+  transform: scale(0.6);
+}
+
+.btn-container{
+  margin-top: 60rpx;
+  width: 100%;
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+
+.btn-add{
+  background-color: #3aa8cc;
+  color: white;
+}

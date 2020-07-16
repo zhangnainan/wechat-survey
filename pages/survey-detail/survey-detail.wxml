@@ -7,7 +7,7 @@
   </view>
   <view class="titlelist-container">
     <view class="title-container">
-      <block wx:for="{{survey.titleList}}" wx:for-item="title">
+      <block wx:for="{{survey.titleList}}" wx:for-item="title" wx:key="id">
         <view class="title">
           <view wx:if="{{title.required=='1'}}"><text decode="true">&nbsp;*&nbsp;</text></view>
           <view>{{title.titleSequence}}、</view>
@@ -15,7 +15,7 @@
         </view>
         <view wx:if="{{title.titleType=='0'}}">
           <radio-group  data-titleId="{{title.id}}" bind:change="radioChange">
-            <block wx:for="{{title.optionModelList}}" wx:for-item="option">
+            <block wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
               <view class="option"> 
                 <radio  value="{{option.id}}" checked="{{option.selected}}" />
                 <text>{{option.optionName}}</text>
@@ -25,7 +25,7 @@
         </view>
         <view wx:elif="{{title.titleType=='1'}}">
           <checkbox-group data-titleId="{{title.id}}" bind:change="checkboxChange">
-            <block wx:for="{{title.optionModelList}}" wx:for-item="option">
+            <block wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
               <view class="option">
                 <checkbox  value="{{option.id}}" checked="{{option.selected}}" />
                 <text>{{option.optionName}}</text>
@@ -34,7 +34,8 @@
           </checkbox-group>        
         </view>
         <view wx:elif="{{title.titleType=='2'}}">
-          <input data-titleId="{{title.id}}" bind:input="inputChange" class="text-input" placeholder="请填写">{{title.text}}</input>
+        <textarea class="text-area" data-titleId="{{title.id}}" bind:input="inputChange"  maxlength="120" placeholder="请输入" ></textarea>
+          <!-- <input data-titleId="{{title.id}}" bind:input="inputChange" class="text-input" placeholder="请填写">{{title.text}}</input> -->
         </view>
       </block>
     </view>

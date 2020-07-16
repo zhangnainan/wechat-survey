@@ -1,32 +1,30 @@
 <wxs src="../../utils/filter.wxs" module="util" />
-<view class="container">
-  <view bind:tap class="survey-container">
+<view wx:if="{{!isLoading && survey!=null}}" class="container">
+  <view data-id="{{survey.id}}" bind:tap="containerTap" class="survey-container {{hiddenFlagMap[survey.id]?'selected-container-border':''}}">
     <view class="survey-name">
       {{survey.surveyName}}
     </view>
     <view class="survey-notes">
       {{survey.notes == '' || survey.notes == null ?'添加备注':survey.notes}}
     </view>
-    <view class="survey-buttons">
-      <view class="button">
+    <view wx:if="{{hiddenFlagMap[survey.id]}}" class="survey-buttons">
+      <view bind:tap="surveyNameEditTap" class="button">
         <image class="image" src="../survey-edit/images/edit.png"></image>
         <text class="text">编辑</text>
       </view>
     </view>
   </view>
-  <block wx:for="{{survey.titleList}}" wx:for-item="title">
-    
-    <view class="title-container">
+  <block wx:for="{{survey.titleList}}" wx:for-item="title" wx:key="id">
+    <view class="title-container {{hiddenFlagMap[title.id]?'selected-container-border':''}}" data-id="{{title.id}}" bind:tap="containerTap">
       <view class="title">
         <view class="title-sequence-view">
           <view class="require-flag" wx:if="{{title.required=='1'}}"><text decode="true">*&nbsp;</text></view>
           <view class="title-sequence">{{title.titleSequence}}、</view>
         </view>
         <view class="title-name">{{title.title}}{{title.titleType == '1'?'（多选）':''}}</view>
-        <!-- <view wx:if="{{title.titleType=='1'}}">（多选）</view> -->
       </view>
       <view class="option-container" wx:if="{{title.titleType =='0' || title.titleType == '1'}}">
-        <view wx:for="{{title.optionModelList}}" wx:for-item="option" class="option">
+        <view wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id" class="option">
           <view class="image-view">
             <image class="option-image" src="{{title.titleType == '0' ? './images/radio.png' : './images/checkbox.png' }}"/>
           </view>
@@ -36,54 +34,33 @@
       <view class="text-container"  wx:if="{{title.titleType=='2'}}">
         <image class="text-image" src="./images/input.png" />
       </view>
+      <view wx:if="{{hiddenFlagMap[title.id]}}" class="title-buttons">
+        <view bind:tap="titleEditTap" data-title="{{title}}" class="button">
+          <image class="image" src="../survey-edit/images/edit.png"></image>
+          <text class="text">编辑</text>
+        </view>
+        <view data-title="{{title}}" bind:tap="titleDeleteTap" class="button">
+          <image class="image" src="../survey-edit/images/delete.png"></image>
+          <text class="text">删除</text>
+        </view>
+      </view>
     </view>
-
   </block>
+  <view class="add-btn" bind:tap="addBtnTap">添加题目</view> 
 </view>
-<!--
-<view hidden="{{isSuccess}}" class="container">
-  <view class="submit-result">{{message}}</view>
-  <view class="survey-container">
-    <view class="survey-name">{{survey.surveyName}}</view>
-    <view class="survey-notes" decode="{{true}}">{{util.format(survey.notes)}}</view>
-  </view>
-  <view class="titlelist-container">
-    <view class="title-container">
-      <block wx:for="{{survey.titleList}}" wx:for-item="title">
-        <view class="title">
-          <view wx:if="{{title.required=='1'}}">*</view>
-          <view>{{title.titleSequence}}、</view>
-          <view style="font-weight:bold;">{{title.title}}</view>
-          <view wx:if="{{title.titleType=='1'}}">（多选）</view>
-        </view>
-        <view wx:if="{{title.titleType=='0'}}">
-          <radio-group data-titleId="{{title.id}}" bind:change="radioChange">
-            <block wx:for="{{title.optionModelList}}" wx:for-item="option">
-              <view class="option">
-                <radio  value="{{option.id}}" checked="{{option.selected}}">{{option.optionName}}</radio> 
-              </view>            
-            </block>
-          </radio-group>
-        </view>
-        <view wx:elif="{{title.titleType=='1'}}">
-          <checkbox-group data-titleId="{{title.id}}" bind:change="checkboxChange">
-            <block wx:for="{{title.optionModelList}}" wx:for-item="option">
-              <view class="option">
-                <checkbox value="{{option.id}}" checked="{{option.selected}}">{{option.optionName}}</checkbox>
-              </view>
-            </block>
-          </checkbox-group>        
-        </view>
-        <view wx:elif="{{title.titleType=='2'}}">
-          <input data-titleId="{{title.id}}" bind:input="inputChange" class="text-input" placeholder="请填写">{{title.text}}</input>
-        </view>
-      </block>
+<view bind:tap="maskTap" class="mask" hidden="{{maskFlag}}"  catchtouchmove='ture'>
+    <view class="buttons">
+      <view data-title-type="single" bind:tap="addTitleTap">
+        <image src="./images/title_single.png"/>
+        <text>单选题</text>
+      </view>
+      <view data-title-type="multiple" bind:tap="addTitleTap">
+        <image src="./images/title_multiple.png"/> 
+        <text>多选题</text>
+      </view>
+      <view data-title-type="text" bind:tap="addTitleTap">
+        <image src="./images/title_text.png"/>
+        <text>填空题</text>
+      </view>
     </view>
-  </view>
-  <view class="submit {{submitBgColor}}" bind:tap="submit">{{submitText}}</view>
 </view>
-<view class="success" hidden="{{!isSuccess}}">
-  <image class="icon" src="../images/success.png"/>
-  <text>您已成功提交问卷，感谢您的参与！</text>
-</view>
--->

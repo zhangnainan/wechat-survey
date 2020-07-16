@@ -1,4 +1,4 @@
-import {SurveyModel} from '../../models/survey'
+import {SurveyModel} from '../../models/survey-p'
 let surveyModel = new SurveyModel();
 Page({
 
@@ -17,6 +17,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.setNavigationBarTitle({
+      title: '问卷列表',
+    })
     this._getSurveyList()
   },
 
@@ -71,15 +74,81 @@ Page({
   },
 
   deleteTap:function(event){
+    let that = this
+    let surveyId = this.data.currentSurvey.id
+    wx.showModal({
+      title : '提示',
+      content : '确定删除 ['+this.data.currentSurvey.surveyName+']?',
+      success(res){
+        if(res.confirm){
+          that._deleteSurvey(surveyId)
+        }
+      }
+    })
+  },
+  _deleteSurvey : function(surveyId){
+    wx.showLoading({
+      title : '删除中...'
+    })
+    surveyModel.deleteSurvey(surveyId).then(res=>{
+      wx.hideLoading()
+      let message = res.message
+      if(message == 'success'){
+        wx.showToast({
+          title: '删除成功',
+          icon :'none',
+          duration : 2000
+        })
+        this._getSurveyList()
+      }else{
+        wx.showToast({
+          title: message,
+          icon :'none',
+          duration : 2000
+        })
+      }
+    },res=>{
+      
+      wx.hideLoading()
+      wx.showToast({
+        title: '发生了一个错误，请联系管理员',
+        icon: 'none'
+      })
+    })
 
   },
   _getSurveyList : function(){
+    wx.showLoading({
+      title: '加载中...',
+    })
+    surveyModel.getSurveyList().then((res)=>{
+      wx.hideLoading()
+      if(res.data != null && res.data != undefined ){
+        this.setData({
+          surveyList:res.data,
+          isLoading : false
+        })
+      }else{
+        this.setData({
+          surveyList:[],
+          isLoading : false
+        })
+      }
+    },(res)=>{
+      
+      wx.hideLoading()
+      wx.showToast({
+        title: '发生了一个错误，请联系管理员',
+        icon : 'none'
+      })
+    })
+    /*
     surveyModel.getSurveyList((res)=>{
       this.setData({
         surveyList:res.data,
         isLoading : false
       })
-    })
+    })*/
   },
 
   /**
@@ -129,7 +198,6 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    console.log('onShareAppMessage')
     return {
       title:this.data.currentSurvey.surveyName,
       imageUrl:'../survey/images/survey1.png',

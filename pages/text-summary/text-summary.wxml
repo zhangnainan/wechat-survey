@@ -7,7 +7,7 @@
       </view>
     </view>
     <view class="myTbody">
-      <view class="myTr" wx:for="{{answerList}}" wx:for-item="submitAnswerItem">
+      <view class="myTr" wx:for="{{answerList}}" wx:for-item="submitAnswerItem" wx:key="id">
         <view class="myTd">{{index+1}}</view>
         <view class="myTd">{{submitAnswerItem.answer}}</view>
       </view>

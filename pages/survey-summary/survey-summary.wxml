@@ -24,7 +24,7 @@
     </view>
     <view class="title-container">
       <view  wx:if="{{byNameStatistics}}">
-        <block wx:for="{{surveyStatistics.titleList}}" wx:for-item="title">
+        <block wx:for="{{surveyStatistics.titleList}}" wx:for-item="title" wx:key="id">
           <view class="title">
             <view>{{title.titleSequence}}、</view>
             <view style="font-weight:bold;">{{title.title}}</view>
@@ -33,7 +33,7 @@
             <view wx:if="{{title.titleType=='2'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;填空&nbsp;]</text></view>
           </view>
           <view wx:if="{{title.titleType=='0' || title.titleType == '1'}}" >
-            <view wx:for="{{title.optionModelList}}" wx:for-item="option">
+            <view wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
               <view>
               </view>
               <view class="option-title">选项{{index+1}}<text decode="true">&nbsp;:&nbsp;</text>{{option.optionName}}</view>
@@ -42,7 +42,7 @@
               <view>{{option.percent}}</view>-->
               
               <view  wx:if="{{option.nameList != null && option.nameList.length > 0}}" class="name-list">
-                <block wx:for="{{option.nameList}}" wx:for-item="name">
+                <block wx:for="{{option.nameList}}" wx:for-item="name" wx:key="*this">
                   <view wx:if="{{index == 0}}">{{name}}</view>
                   <view wx:if="{{index > 0}}"><text style="color:#000;" decode="true">&nbsp;、&nbsp;</text>{{name}}</view>
                 </block>
@@ -57,7 +57,7 @@
         </block>
       </view>
       <view wx:else >
-        <block wx:for="{{surveySummary.titleList}}" wx:for-item="title">
+        <block wx:for="{{surveySummary.titleList}}" wx:for-item="title" wx:key="id">
           <view class="title">
             <view>{{title.titleSequence}}、</view>
             <view style="font-weight:bold;">{{title.title}}</view>
@@ -75,7 +75,7 @@
                   </view>
               </view>
               <view class="myTbody">
-                  <view class="myTr" wx:for="{{title.optionModelList}}" wx:for-item="option">
+                  <view class="myTr" wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
                     <view class="myTd">{{option.optionName}}</view>
                     <view class="myTd">{{option.submitCount}}</view>
                     <view class="myTd">{{option.percent}}</view>
@@ -93,7 +93,7 @@
     </view>
   </view>
   <view wx:if="{{currentTab == 1}}" class="sub-container">
-    <block wx:for="{{surveySubmitDetailList}}" wx:for-item="surveySubmit">
+    <block wx:for="{{surveySubmitDetailList}}" wx:for-item="surveySubmit" wx:key="id">
      <view wx:if="{{index > 0}}" class="list-split-space" />
      <view style="background: #ffff; margin-bottom:20rpx;">
         <view class="submit-list-item">
@@ -102,12 +102,12 @@
         </view>
         <view class="submit-titles-container" wx:if="{{index==unfoldInx}}">
           <view>
-            <block wx:for="{{surveySubmit.titleList}}" wx:for-item="title">
+            <block wx:for="{{surveySubmit.titleList}}" wx:for-item="title" wx:key="id">
               <view class="submit-title">
                 {{title.titleSequence}}<text decode="true">&nbsp;.&nbsp;</text>{{title.title}}
               </view>
               <view class="submit-option" wx:if="{{title.titleType == '0' || title.titleType == '1'}}" >
-                <block wx:for="{{title.optionModelList}}" wx:for-item="option">
+                <block wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
                   <view wx:if="{{index == 0}}">{{option.optionName}}</view>
                   <view wx:if="{{index > 0}}"><text style="color:#000;" decode="true">&nbsp;、&nbsp;</text> {{option.optionName}}</view>
                 </block>

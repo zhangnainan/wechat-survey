@@ -8,9 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    survey : Object,
     submitBgColor: 'before-submit-bgcolor',
-    surveyName : '',
-    surveyNotes : '',
     disabled : false,
     saveBtnText : '保 存'
   },
@@ -20,7 +19,11 @@ Page({
    */
   onLoad: function (options) {
     wx.setNavigationBarTitle({
-      title: '创建问卷',
+      title: '问卷信息编辑',
+    })
+    let survey = JSON.parse(options.survey)
+    this.setData({
+      survey
     })
   }, 
 
@@ -36,22 +39,21 @@ Page({
       return
     }
 
-    surveyModel.saveSurvey(this.data.surveyName,this.data.surveyNotes).then(res=>{
+    surveyModel.updateSurvey(this.data.survey).then(res=>{
       let message = res.message
       if(message == 'success'){
-        const surveyId = res.data.id
         wx.showToast({
           title: '保存成功',
           icon : 'none',
           duration : 3000
         })
-        wx.redirectTo({
-          url: '/pages/survey-edit/survey-edit?surveyId='+surveyId,
+        wx.navigateBack({
+          delta:1
         })
       }else{
         if(message == 'error.exists'){
           wx.showToast({
-            title: this.data.surveyName+'已经存在！',
+            title: this.data.survey.surveyName+'已经存在！',
             icon : 'none'
           })
         }else{
@@ -60,9 +62,9 @@ Page({
             icon : 'none'
           })
         }
-        this._btnReset()
+        
       }
-      
+      this._btnReset()
     },res=>{
       wx.showToast({
         title: '发生了一个错误，请联系管理员',
@@ -78,20 +80,24 @@ Page({
 
   surveyNameInput : function(e){
     let surveyName =  e.detail.value
+    let survey = this.data.survey
+    survey.surveyName = surveyName
     this.setData({
-      surveyName
+      survey
     })
   },
 
   surveyNotesInput : function(e){
     let surveyNotes = e.detail.value
+    let survey = this.data.survey
+    survey.notes = surveyNotes
     this.setData({
-      surveyNotes
+      survey
     })
   },
 
   checkDataIsLegal : function(){
-    const surveyName = this.data.surveyName
+    const surveyName = this.data.survey.surveyName
     if(surveyName == null || surveyName == undefined || surveyName.trim() == '' ){
       wx.showToast({
         title: '问卷名称为必填选项！',

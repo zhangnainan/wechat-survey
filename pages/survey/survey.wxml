@@ -1,9 +1,9 @@
 <view wx:if="{{!isLoading}}" class="container">
-  <block wx:for="{{surveyList}}">
+  <block wx:for="{{surveyList}}" wx:key="id">
     <view  data-survey="{{item}}"  bind:tap="onTap" class="item">
       <view class="left">
         <view><text class="surveyname">{{item.surveyName}}</text></view>
-        <view><text class="{{item.surveyState=='1'?'openstate':'closestate'}}">{{item.surveyState=="1"?"问卷调查中":"问卷已关闭"}}</text></view>
+        <view style="display:none;"><text class="{{item.surveyState=='1'?'openstate':'closestate'}}">{{item.surveyState=="1"?"问卷调查中":"问卷已关闭"}}</text></view>
       </view>
       <view class="centerline"></view>
       <view class="right">

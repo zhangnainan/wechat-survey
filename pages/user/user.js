@@ -9,7 +9,7 @@ Page({
   data: {
     username : '',
     password : '',
-    login_btn_text : '登录',
+    login_btn_text : '登 录',
     isUsernameInput : false,
     isPasswordInput : false,
     disabled : false
@@ -19,7 +19,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    wx.setNavigationBarTitle({
+      title: '',
+    })
   },
   loginSubmit : function(event){
     let isUserDataLegal = this._checkUserDataIsLegal()
@@ -30,6 +32,33 @@ Page({
       disabled : true,
       login_btn_text : '登录中...'
     })
+
+    useModel.login(this.data.username,this.data.password).then(res=>{
+      if(!stringUtil.isNull(res) && !stringUtil.isNull(res.message) && res.message == 'success'){
+        wx.redirectTo({
+          url: '/pages/survey/survey',
+        })
+      }else{
+        wx.showToast({
+          title: '用户名或者密码错误',
+          icon:'none'
+        })
+        this.setData({
+          disabled : false,
+          login_btn_text : '登 录'
+        })
+      }
+    },res=>{
+      wx.showToast({
+        title: '发生了一个错误，请联系管理员',
+        icon:'none'
+      })
+      this.setData({
+        disabled : false,
+        login_btn_text : '登 录'
+      })
+    })
+
     useModel.login(this.data.username,this.data.password,(res)=>{
       if(!stringUtil.isNull(res) && !stringUtil.isNull(res.message) && res.message == 'success'){
         wx.redirectTo({
@@ -42,9 +71,14 @@ Page({
         })
         this.setData({
           disabled : false,
-          login_btn_text : '登录'
+          login_btn_text : '登 录'
         })
       }
+    },res=>{
+      this.setData({
+        disabled : false,
+        login_btn_text : '登 录'
+      })
     })
 
   },
@@ -75,14 +109,14 @@ Page({
   _checkUserDataIsLegal : function(){
     if(stringUtil.isNull(this.data.username)){
       wx.showToast({
-        title: '用户名不能为空',
+        title: '请填写用户名',
         icon:'none'
       })
       return false
     }
     if(stringUtil.isNull(this.data.password)){
       wx.showToast({
-        title: '密码不能为空',
+        title: '请填写密码',
         icon:'none'
       })
       return false

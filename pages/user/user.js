@@ -35,6 +35,8 @@ Page({
 
     useModel.login(this.data.username,this.data.password).then(res=>{
       if(!stringUtil.isNull(res) && !stringUtil.isNull(res.message) && res.message == 'success'){
+        let app = getApp()
+        app.globalData.userId = res.data.id
         wx.redirectTo({
           url: '/pages/survey/survey',
         })
@@ -59,6 +61,7 @@ Page({
       })
     })
 
+    /*
     useModel.login(this.data.username,this.data.password,(res)=>{
       if(!stringUtil.isNull(res) && !stringUtil.isNull(res.message) && res.message == 'success'){
         wx.redirectTo({
@@ -80,7 +83,7 @@ Page({
         login_btn_text : '登 录'
       })
     })
-
+    */
   },
 
   usernameInput : function(event){

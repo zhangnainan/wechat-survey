@@ -17,6 +17,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+   
     wx.setNavigationBarTitle({
       title: '问卷列表',
     })
@@ -121,7 +122,8 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    surveyModel.getSurveyList().then((res)=>{
+    const userId = getApp().globalData.userId
+    surveyModel.getSurveyList(userId).then((res)=>{
       wx.hideLoading()
       if(res.data != null && res.data != undefined ){
         this.setData({

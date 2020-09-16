@@ -35,8 +35,8 @@ Page({
       this._btnReset()
       return
     }
-
-    surveyModel.saveSurvey(this.data.surveyName,this.data.surveyNotes).then(res=>{
+    const userId = getApp().globalData.userId
+    surveyModel.saveSurvey(userId,this.data.surveyName,this.data.surveyNotes).then(res=>{
       let message = res.message
       if(message == 'success'){
         const surveyId = res.data.id

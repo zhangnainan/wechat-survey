@@ -1,9 +1,12 @@
 import {HTTP} from '../utils/http-p.js'
 
 class SurveyModel extends HTTP{
-  getSurveyList(){
+  getSurveyList(creator){
     return this.request({
-      url:'survey/get/survey/list'
+      url:'survey/get/survey/list',
+      data :{
+        'creator' : creator
+      }
     })
   }
 
@@ -55,10 +58,11 @@ class SurveyModel extends HTTP{
     })
   }
 
-  saveSurvey(surveyName,surveyNotes){
+  saveSurvey(userId,surveyName,surveyNotes){
     return this.request({
       url : 'survey/save/survey',
       data : {
+        'creator' : userId,
         'surveyName' : surveyName,
         'notes' : surveyNotes
       },

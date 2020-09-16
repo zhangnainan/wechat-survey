@@ -62,7 +62,6 @@ Page({
             icon : 'none'
           })
         }
-        
       }
       this._btnReset()
     },res=>{

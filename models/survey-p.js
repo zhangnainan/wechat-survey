@@ -58,11 +58,11 @@ class SurveyModel extends HTTP{
     })
   }
 
-  saveSurvey(userId,surveyName,surveyNotes){
+  saveSurvey(creator,surveyName,surveyNotes){
     return this.request({
       url : 'survey/save/survey',
       data : {
-        'creator' : userId,
+        'creator' : creator,
         'surveyName' : surveyName,
         'notes' : surveyNotes
       },

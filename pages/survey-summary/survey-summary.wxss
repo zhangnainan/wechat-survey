@@ -111,6 +111,8 @@ page{
   flex-direction: row;
   padding: 10rpx 10rpx 10rpx 0rpx;
   font-size: 28rpx;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .option{
@@ -264,6 +266,8 @@ page{
   border-bottom: 1px dashed #959699;
   font-size: 28rpx;
   color: #999;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 .name{
   font-size: 28rpx;

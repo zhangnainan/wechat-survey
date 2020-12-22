@@ -36,7 +36,7 @@
             <view wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
               <view>
               </view>
-              <view class="option-title">选项{{index+1}}<text decode="true">&nbsp;:&nbsp;</text>{{option.optionName}}</view>
+              <view class="option-title">选项{{index+1}}<text decode="true">&nbsp;:&nbsp;</text>{{option.optionName}} <text decode="true" style="color: rgb(58, 168, 204);">&nbsp;&nbsp;({{option.nameList != null && option.nameList.length > 0?  option.nameList.length:0}}人)</text></view>
               <!--
               <view>{{option.submitCount}}</view>
               <view>{{option.percent}}</view>-->

@@ -185,9 +185,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log('byNameStatistics')
+    //console.log('byNameStatistics')
     if(this.data.byNameStatistics){
-      console.log(this.data.statisticTitle)
+      //console.log(this.data.statisticTitle)
       this._getSurveyAll()
     }
   },

@@ -12,7 +12,17 @@ Page({
     hiddenFlagMap : null,
     maskFlag : true,
     isLoading : true,
-    isNavigateBack : false
+    items: [
+      {
+        "iconPath": "./images/add.png",
+        "text": "题目"
+      },
+      {
+        "iconPath": "./images/setting.png",
+        "text": "设置"
+      }
+    ]
+    
   },
 
   /**
@@ -24,49 +34,9 @@ Page({
     })  
     const surveyId = options.surveyId
     this._getSurvey(surveyId)
-    /*
-    wx.showLoading()
-    surveyModel.getSurvey(surveyId).then(res=>{
-      wx.hideLoading()
-      let message = res.message
-      if(message == 'success'){
-        this._initHiddenFlag(res.data)
-        this.setData({
-          survey:res.data,
-          isLoading : false
-        })
-      }else{
-        wx.showToast({
-          title: '发生了一个错误',
-        })
-        this.setData({
-          survey:null,
-          isLoading : false
-        })
-      }
-    },res=>{
-      wx.hideLoading()
-      wx.showToast({
-        title: '发生了一个错误,请联系管理员',
-      })
-      this.setData({
-        survey:null,
-        isLoading : false
-      })
-    })
-    */
-    /*
-    surveyModel.getSurvey(surveyId,(res)=>{
-      wx.hideLoading()
-      this._initHiddenFlag(res.data)
-      this.setData({
-        survey:res.data,
-        isLoading : false
-      })
-    })
-    */
   },
 
+  
   containerTap : function(e){
     const id = e.currentTarget.dataset.id
     const hiddenFlag = this.data.hiddenFlagMap[id]
@@ -82,9 +52,10 @@ Page({
       hiddenFlagMap
     })
   },
-
+  
   surveyNameEditTap : function(e){
-    let surveyJson  = JSON.stringify(this.data.survey)
+    let survey = this.data.survey
+    let surveyJson = JSON.stringify(survey)
     wx.navigateTo({
       url: '/pages/survey-info-edit/survey-info-edit?survey='+surveyJson,
     })
@@ -137,7 +108,9 @@ Page({
     })
   },
   _getSurvey : function(surveyId){
-    wx.showLoading()
+    wx.showLoading({
+      title : '加载中...'
+    })
     surveyModel.getSurvey(surveyId).then(res=>{
       wx.hideLoading()
       let message = res.message
@@ -197,15 +170,6 @@ Page({
         })
         wx.showLoading()
         this._getSurvey(this.data.survey.id)
-        /*
-        surveyModel.getSurvey(this.data.survey.id,(res)=>{
-          wx.hideLoading()
-          this._initHiddenFlag(res.data)
-          this.setData({
-            survey:res.data,
-            isLoading : false
-          })
-        })*/
       }else{
         wx.showToast({
           title: message,
@@ -218,6 +182,18 @@ Page({
         icon: 'none'
       })
     })
+  },
+
+  bottomBtnsTap : function(e){
+    let currentIdx = e.currentTarget.dataset.current
+    if(currentIdx == 0){
+      this.addBtnTap()
+    }else{
+      let jsonData = JSON.stringify(this.data.survey)
+      wx.navigateTo({
+        url: '/pages/survey-settings/survey-settings?surveyJson='+jsonData,
+      })
+    }
   },
   
 
@@ -233,35 +209,8 @@ Page({
   onShow: function () {
     let surveyId = this.data.survey.id
     if(surveyId != null && surveyId != undefined && surveyId != ''){
-      console.log('reload survey')
       this._getSurvey(this.data.survey.id)
-      /*
-      wx.showLoading()
-      surveyModel.getSurvey(this.data.survey.id,(res)=>{
-        wx.hideLoading()
-        console.log(res.data)
-        this._initHiddenFlag(res.data)
-        this.setData({
-          survey:res.data,
-          isLoading : false,
-          isNavigateBack : false
-        })
-      })*/
     }
-    /*
-    if(this.data.isNavigateBack){
-      wx.showLoading()
-      surveyModel.getSurvey(this.data.survey.id,(res)=>{
-        wx.hideLoading()
-        console.log(res.data)
-        this._initHiddenFlag(res.data)
-        this.setData({
-          survey:res.data,
-          isLoading : false,
-          isNavigateBack : false
-        })
-      })
-    }*/
   },
 
   /**

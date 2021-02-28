@@ -3,7 +3,7 @@
     <view class="myThead">
       <view class="myTr">
         <view class="myTd">序号</view>
-        <view style="width: 88%;" class="myTd">答案文本</view>
+        <view style="width: 80%;" class="myTd">答案文本</view>
       </view>
     </view>
     <view class="myTbody">

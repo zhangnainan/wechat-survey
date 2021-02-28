@@ -87,6 +87,20 @@ Page({
       }
     })
   },
+  clearTap : function(event){
+    let that = this
+    let surveyId = this.data.currentSurvey.id
+    wx.showModal({
+      title : '提示',
+      content : '确定清空 ['+this.data.currentSurvey.surveyName+'] 的所有数据?',
+      success(res){
+        if(res.confirm){
+          that._clearSurvey(surveyId)
+        }
+      }
+    })
+  },
+
   _deleteSurvey : function(surveyId){
     wx.showLoading({
       title : '删除中...'
@@ -100,6 +114,7 @@ Page({
           icon :'none',
           duration : 2000
         })
+        setTimeout(function(){},2000)
         this._getSurveyList()
       }else{
         wx.showToast({
@@ -110,6 +125,37 @@ Page({
       }
     },res=>{
       
+      wx.hideLoading()
+      wx.showToast({
+        title: '发生了一个错误，请联系管理员',
+        icon: 'none'
+      })
+    })
+  },
+
+  _clearSurvey : function(surveyId){
+    wx.showLoading({
+      title : '正在清空数据...'
+    })
+    surveyModel.clearSurvey(surveyId).then(res=>{
+      wx.hideLoading()
+      let message = res.message
+      if(message == 'success'){
+        wx.showToast({
+          title: '已成功清空所有数据',
+          icon :'none',
+          duration : 2000
+        })
+        setTimeout(function(){},2000)
+        this._getSurveyList()
+      }else{
+        wx.showToast({
+          title: message,
+          icon :'none',
+          duration : 2000
+        })
+      }
+    },res=>{
       wx.hideLoading()
       wx.showToast({
         title: '发生了一个错误，请联系管理员',

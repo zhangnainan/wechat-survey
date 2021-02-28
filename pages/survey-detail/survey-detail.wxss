@@ -1,4 +1,62 @@
 
+.show-author {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(153,153,153,0.6);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  opacity: .7;
+}
+
+.show-author-title {
+  position: absolute;
+  bottom: 0rpx;
+  width: 100%;
+  height: auto;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: #999;
+}
+
+/*
+.show-author {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: #000;
+  opacity: .7;
+}
+
+.show-author-title {
+  position: absolute;
+  top: 50%;
+  left: 22.3%;
+  color: #fff;
+}*/
+
+.show-author-title button {
+  width: 80%;
+  height: 80rpx;
+  margin-top: 30rpx;
+  background-color:rgb(58, 168, 204);
+  line-height: 80rpx;
+  padding: 0;
+  color: white;
+}
+
+
+
 .container{
   display: flex;
   flex-direction: column;

@@ -1,13 +1,13 @@
 <wxs src="../../utils/filter.wxs" module="util" />
 <view class="container">
   <view class="nav" >
-    <view class="nav-item {{currentTab==0?'is-active':''}}" bind:tap="navItemTap" data-idx="0">
+    <view class="nav-item {{currentTab==0?'is-active':''}}" bindtap="navItemTap" data-idx="0">
       <text>结果统计</text>
     </view>
-    <view class="nav-item {{currentTab==1?'is-active':''}}" bind:tap="navItemTap" data-idx="1">
+    <view class="nav-item {{currentTab==1?'is-active':''}}" bindtap="navItemTap" data-idx="1">
       <text>答卷详情</text>
     </view>
-    <image wx:if="{{currentTab==0}}" bind:tap="moreTap" class="icon" src="../survey-summary/images/more.png" />
+    <image wx:if="{{currentTab==0}}" bindtap="moreTap" class="icon" src="../survey-summary/images/more.png" />
   </view> 
   <view class="split-space"></view>
   <view wx:if="{{currentTab==0}}" class="sub-container">
@@ -18,20 +18,19 @@
         <view class="condition-title">{{statisticTitle.title}}</view>
       </view>
       <view class="condition-buttons-container">
-       <view bind:tap="modifyConditionTap" class="condition-button">修改条件</view>
-       <view bind:tap="clearConditionTap" class="condition-button">清除条件</view>
+       <view bindtap="modifyConditionTap" class="condition-button">修改条件</view>
+       <view bindtap="clearConditionTap" class="condition-button">清除条件</view>
       </view>
     </view>
     <view class="title-container">
       <view  wx:if="{{byNameStatistics}}">
         <block wx:for="{{surveyStatistics.titleList}}" wx:for-item="title" wx:key="id">
           <view class="title">
-            <view>{{title.titleSequence}}、</view>
-            <view style="font-weight:bold;">{{title.title}}</view>
-            <view wx:if="{{title.titleType=='0'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;单选&nbsp;]</text></view>
-            <view wx:if="{{title.titleType=='1'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;多选&nbsp;]</text></view>
-            <view wx:if="{{title.titleType=='2'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;填空&nbsp;]</text></view>
+            <text wx:if="{{title.titleType=='0'}}"  decode="{{true}}">{{title.titleSequence}}、{{title.title}}&nbsp;&nbsp;[&nbsp;单选&nbsp;]</text>
+            <text wx:if="{{title.titleType=='1'}}"  decode="{{true}}">{{title.titleSequence}}、{{title.title}}&nbsp;&nbsp;[&nbsp;多选&nbsp;]</text>
+            <text wx:if="{{title.titleType=='2'}}"  decode="{{true}}">{{title.titleSequence}}、{{title.title}}&nbsp;&nbsp;[&nbsp;填空&nbsp;]</text>
           </view>
+        
           <view wx:if="{{title.titleType=='0' || title.titleType == '1'}}" >
             <view wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
               <view>
@@ -50,7 +49,7 @@
             </view>
           </view>
           <view wx:elif="{{title.titleType=='2'}}">
-            <view data-currentTapTitle="{{title}}"  bind:tap="textNameStatisticsTap" class="text-summary-link">
+            <view data-currentTapTitle="{{title}}"  bindtap="textNameStatisticsTap" class="text-summary-link">
               查看详细数据
             </view>
           </view>
@@ -59,11 +58,9 @@
       <view wx:else >
         <block wx:for="{{surveySummary.titleList}}" wx:for-item="title" wx:key="id">
           <view class="title">
-            <view>{{title.titleSequence}}、</view>
-            <view style="font-weight:bold;">{{title.title}}</view>
-            <view wx:if="{{title.titleType=='0'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;单选&nbsp;]</text></view>
-            <view wx:if="{{title.titleType=='1'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;多选&nbsp;]</text></view>
-            <view wx:if="{{title.titleType=='2'}}"><text decode="{{true}}">&nbsp;&nbsp;[&nbsp;填空&nbsp;]</text></view>
+            <text wx:if="{{title.titleType=='0'}}"  decode="{{true}}">{{title.titleSequence}}、{{title.title}}&nbsp;&nbsp;[&nbsp;单选&nbsp;]</text>
+            <text wx:if="{{title.titleType=='1'}}"  decode="{{true}}">{{title.titleSequence}}、{{title.title}}&nbsp;&nbsp;[&nbsp;多选&nbsp;]</text>
+            <text wx:if="{{title.titleType=='2'}}"  decode="{{true}}">{{title.titleSequence}}、{{title.title}}&nbsp;&nbsp;[&nbsp;填空&nbsp;]</text>
           </view>
           <view wx:if="{{title.titleType=='0' || title.titleType == '1'}}" >
             <view class="myTable">
@@ -84,7 +81,7 @@
             </view>
           </view>
           <view wx:elif="{{title.titleType=='2'}}">
-            <view data-answerList="{{title.submitTitleAnswerModelList}}"  bind:tap="textSummaryViewTap" class="text-summary-link">
+            <view data-answerList="{{title.submitTitleAnswerModelList}}"  bindtap="textSummaryViewTap" class="text-summary-link">
               查看详细数据
             </view>
           </view>
@@ -125,9 +122,9 @@
     </block>
   </view>
 </view>
-<view bind:tap="maskTap" class="mask" hidden="{{maskHiddenFlag}}" catchtouchmove='ture'>
+<view bindtap="maskTap" class="mask" hidden="{{maskHiddenFlag}}" catchtouchmove='ture'>
   <view class="mask-bottom">
-    <view bind:tap="nameSelectionTap" class="bottom-item">按姓名进行统计</view>
+    <view bindtap="nameSelectionTap" class="bottom-item">按姓名进行统计</view>
     <view class="bottom-split-line"></view>
     <view class="bottom-item">取消</view>
   </view>

@@ -46,7 +46,7 @@ Page({
       optionList.push({
         'optionName' : ''
       })
-      console.log(optionList.length)
+      
       this.setData({
         optionList
       })
@@ -96,17 +96,18 @@ Page({
       titleType = '2'
     }
     let required = values.required
+    let isNameColumn = values.isNameColumn
     let title = {
       'title' : values.title,
       'titleType' : titleType,
       'required' : required ? '1' : '0',
+      'isNameColumn' : isNameColumn ? '1' : '0',
       'surveyId' : this.data.surveyId
     }
 
     if(titleType == '0' || titleType == '1'){
       title.optionModelList = this.data.optionList
     }
-    console.log(title)
     titleModel.saveTitleModel(title).then(res=>{
       let message = res.message
       if(message == "success"){
@@ -143,7 +144,6 @@ Page({
   },
   deleteOptionTap : function(e){
     let index = e.currentTarget.dataset.index
-    console.log(index)
     if(this.data.optionList.length <= 2){
       wx.showToast({
         title: '不能删除，至少保留两个选项',

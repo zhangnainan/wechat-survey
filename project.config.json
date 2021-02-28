@@ -24,7 +24,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.11.1",
+	"libVersion": "2.3.2",
 	"appid": "wx23c65ec205e7c1ca",
 	"projectname": "survey",
 	"debugOptions": {

@@ -17,6 +17,16 @@ class SurveyModel extends HTTP{
     })
   }
 
+  loadSurveyByIdAndUserNickName(surveyId,wxNickname){
+    return this.request({
+      url : 'survey/load/survey',
+      data:{
+        'surveyId' : surveyId,
+        'wxNickname' : wxNickname
+      }
+    })
+  }
+
   deleteSurvey(surveyId){
     return this.request({
       url:'survey/delete/survey',
@@ -25,9 +35,17 @@ class SurveyModel extends HTTP{
     })
   }
 
-  submitSurvey(survey){
+  clearSurvey(surveyId){
     return this.request({
-      url:'survey/submit/survey',
+      url:'survey/clear/survey',
+      data:{'surveyId':surveyId},
+      method : 'DELETE'
+    })
+  }
+
+  submitSurvey(survey, wxNickname){
+    return this.request({
+      url:'survey/submit/survey?wxNickname='+wxNickname,
       method:'POST',
       data:survey
     })
@@ -73,6 +91,14 @@ class SurveyModel extends HTTP{
   updateSurvey(survey){
     return this.request({
       url : 'survey/update/survey',
+      data : survey,
+      method : 'POST'
+    })
+  }
+
+  updateSurveyTimeSetting(survey){
+    return this.request({
+      url : 'survey/update/survey/time/setting',
       data : survey,
       method : 'POST'
     })

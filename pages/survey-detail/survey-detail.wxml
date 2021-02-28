@@ -1,5 +1,12 @@
+
+<view class='show-author' style='display:{{ismask}}'>
+    <view class='show-author-title'>
+      <text>三钢质计问卷调查需要获取您的微信昵称</text>
+      <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" bindtap='closeHide'>授权登录</button>
+    </view>
+</view>
 <wxs src="../../utils/filter.wxs" module="util" />
-<view wx:if="{{!loading}}" hidden="{{isSuccess}}" class="container">
+<view wx:if="{{!loading}}" hidden="{{isSuccess || isNotStart || isTimeOut}}" class="container">
   <view class="submit-result">{{message}}</view>
   <view class="survey-container">
     <view class="survey-name">{{survey.surveyName}}</view>
@@ -11,10 +18,10 @@
         <view class="title">
           <view wx:if="{{title.required=='1'}}"><text decode="true">&nbsp;*&nbsp;</text></view>
           <view>{{title.titleSequence}}、</view>
-          <view >{{title.title}}{{title.titleType == '1'?'（多选）':''}}</view>
+          <view>{{title.title}}{{title.titleType == '1'?'（多选）':''}}</view>
         </view>
         <view wx:if="{{title.titleType=='0'}}">
-          <radio-group  data-titleId="{{title.id}}" bind:change="radioChange">
+          <radio-group  data-titleId="{{title.id}}" bindchange="radioChange">
             <block wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
               <view class="option"> 
                 <radio  value="{{option.id}}" checked="{{option.selected}}" />
@@ -24,7 +31,7 @@
           </radio-group>
         </view>
         <view wx:elif="{{title.titleType=='1'}}">
-          <checkbox-group data-titleId="{{title.id}}" bind:change="checkboxChange">
+          <checkbox-group data-titleId="{{title.id}}" bindchange="checkboxChange">
             <block wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
               <view class="option">
                 <checkbox  value="{{option.id}}" checked="{{option.selected}}" />
@@ -34,15 +41,25 @@
           </checkbox-group>        
         </view>
         <view wx:elif="{{title.titleType=='2'}}">
-        <textarea class="text-area" data-titleId="{{title.id}}" bind:input="inputChange"  maxlength="120" placeholder="请输入" ></textarea>
+        <textarea class="text-area" data-titleId="{{title.id}}" bindinput="inputChange"  maxlength="120" placeholder="请输入" value="{{title.text}}"></textarea>
           <!-- <input data-titleId="{{title.id}}" bind:input="inputChange" class="text-input" placeholder="请填写">{{title.text}}</input> -->
         </view>
       </block>
     </view>
   </view>
-  <view class="submit {{submitBgColor}}" bind:tap="submit">{{submitText}}</view>
+  <view class="submit {{submitBgColor}}" bindtap="submit">{{submitText}}</view>
 </view>
 <view class="success" hidden="{{!isSuccess}}">
   <image class="icon" src="../images/success.png"/>
   <text>您已成功提交问卷，感谢您的参与！</text>
 </view>
+<view class="success" hidden="{{!isNotStart}}">
+  <image class="icon" src="./images/notstart.png"/>
+  <text>问卷调查未开始！</text>
+</view>
+<view class="success" hidden="{{!isTimeOut}}">
+  <image class="icon" src="./images/timeout.png"/>
+  <text>问卷调查已结束！</text>
+</view>
+
+

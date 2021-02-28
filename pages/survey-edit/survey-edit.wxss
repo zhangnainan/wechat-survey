@@ -1,6 +1,13 @@
+/*
 page{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}*/
+page {
   background-color: #f5f5f5;
 }
+
 
 .container{
   display: flex;
@@ -8,6 +15,7 @@ page{
   align-items: center;
   padding: 0rpx;
   letter-spacing: 2rpx;
+  padding-bottom: 87.6rpx;
 }
 
 .survey-container{
@@ -62,14 +70,6 @@ page{
   flex-direction: column;
   background-color: #fff;
 }
-/*
-.title{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-}*/
 
 .title{
   display: flex;
@@ -187,10 +187,10 @@ page{
   background: rgba(153,153,153,0.6);
   top: 0;
   left: 0;
-/*  opacity: 0.5; */
   z-index: 9999;
   position: fixed;
 }
+
 .mask-bottom{
   height: 250rpx;
   display: flex;
@@ -226,4 +226,56 @@ page{
 .buttons view image{
   width: 80rpx;
   height: 80rpx;
+}
+
+
+/*** added **/
+.nav-tabs {
+  width: 100%;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+}
+
+.tab-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+  background: #fcfcfc;
+}
+
+.tab-text {
+  font-size: 24rpx;
+  line-height: 35rpx;
+  color: #5f5f5f;
+}
+
+.iconPath {
+  width:54rpx;
+  height: 54rpx;
+}
+
+.tab-content {
+  flex: 1;
+}
+
+.default {
+  line-height: 75rpx;
+  text-align: center;
+  flex: 1;
+  color: #eee;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+
+.show {
+  display: block;
+  flex: 1;
+}
+
+.hidden {
+  display: none;
+  flex: 1;
 }

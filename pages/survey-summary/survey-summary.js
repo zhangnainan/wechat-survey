@@ -31,7 +31,6 @@ Page({
     this._getSurveySummary()
   },
   navItemTap : function(event){
-    
     const idx = event.currentTarget.dataset.idx
     this.setData({
       currentTab : idx
@@ -97,11 +96,16 @@ Page({
     });
   },
   _getSurveySummary : function(){
+    wx.showLoading({
+      title: '加载中...',
+    })
     surveyModel.getSurveySummary(this.data.surveyId).then(res=>{
       this.setData({
         surveySummary:res.data
       })
+      wx.hideLoading()
     },res=>{
+      wx.hideLoading()
       wx.showToast({
         title: '发生了一个错误，请联系管理员',
         icon : 'none'
@@ -121,11 +125,16 @@ Page({
     */ 
   },
   _getSurveySubmitDetail : function(){
+    wx.showLoading({
+      title: '加载中...',
+    })
     surveyModel.getSurveySubmitDetail(this.data.surveyId).then(res=>{
       this.setData({
         surveySubmitDetailList:res.data
       })
+      wx.hideLoading()
     },res=>{
+      wx.hideLoading()
       wx.showToast({
         title: '发生了一个错误，请联系管理员',
         icon : 'none'
@@ -146,7 +155,9 @@ Page({
     */
   },
   _getSurveyAll : function(){
-    
+    wx.showLoading({
+      title: '加载中...',
+    })
     const statics = surveyModel.getSurveyStatics(this.data.surveyId,this.data.statisticTitle.id)
     const submitDetail = surveyModel.getSurveySubmitDetail(this.data.surveyId)
     const summary = surveyModel.getSurveySummary(this.data.surveyId)
@@ -156,7 +167,9 @@ Page({
         surveySubmitDetailList : res[1].data,
         surveySummary : res[2].data      
       })
+      wx.hideLoading()
     },res=>{
+      wx.hideLoading()
       wx.showToast({
         title: '发生了一个错误，请联系管理员',
         icon : 'none'

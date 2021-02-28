@@ -1,11 +1,11 @@
 <view class="container">
-  <form bind:submit="titleAddSubmit" class="form">
+  <form bindsubmit="titleAddSubmit" class="form">
     <view class="title-name-container">
       <view class="title-name-label">
         <text decode="true"> * 标题</text>
       </view>
       <view class="title-name">
-        <textarea bind:input="titleNameInput" name="title"   maxlength="30"  class="titlename-textarea" value="{{title.title}}"></textarea>
+        <textarea bindinput="titleNameInput" name="title"   maxlength="30"  class="titlename-textarea" value="{{title.title}}"></textarea>
       </view>
     </view>
     <view wx:if="{{title.titleType == '0' || title.titleType == '1'}}" class="label">
@@ -14,8 +14,8 @@
     <view wx:if="{{title.titleType == '0' || title.titleType == '1'}}" class="option-container">
       <block wx:for="{{title.optionModelList}}" wx:for-item="option"  wx:key="id">
         <view class="option">
-          <image data-index="{{index}}" bind:tap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
-          <input data-index="{{index}}" bind:input="optionNameInput" name="option{{index}}" maxlength="50" value="{{option.optionName}}" class="option-input"></input>
+          <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
+          <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="50" value="{{option.optionName}}" class="option-input"></input>
         </view>
       </block>
       <!-- 
@@ -24,7 +24,7 @@
         <input name="optionName" maxlength="50" class="option-input"></input>
       </view>
       -->
-      <view bind:tap="addOptionTap" class="add">
+      <view bindtap="addOptionTap" class="add">
         <image class="image-add" src="./images/add.png"></image>
         <text class="text-add">添加选项</text>
       </view>
@@ -36,7 +36,11 @@
     <view class="setting-container">
       <view class="setting">
         <text>此题目必须作答</text>
-        <switch bind:change="requireChange" checked="{{title.required == '1' ? true : false}}" name="required" type="switch"></switch>
+        <switch bindchange="requireChange" checked="{{title.required == '1' ? true : false}}" name="required" type="switch"></switch>
+      </view>
+      <view wx:if="{{title.titleType == '2'}}" class="setting">
+        <text>设置为姓名列</text>
+        <switch bindchange="isNameColumnChange" checked="{{title.isNameColumn == '1' ? true : false}}" name="isNameColumn" type="switch"></switch>
       </view>
     </view>
 

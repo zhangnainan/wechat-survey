@@ -87,7 +87,7 @@ page{
   position: fixed;
 }
 .mask-bottom{
-  height: 250rpx;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,23 +107,31 @@ page{
 
 .split-line{
   width: 100%;
-  height:1rpx;
+ /* height:1rpx; */
   background-color: #999;
   border-bottom: 1rpx solid lightgrey;
 }
 
 .buttons{
-  height: 200rpx;
+  height: auto;
   width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  /*justify-content: space-around;*/
+  margin-bottom: 20rpx;
+  justify-content: flex-start; 
+ flex-wrap: wrap;
 }
 
 .buttons view {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  padding-top: 20rpx;
 }
 .buttons view image{
   width: 80rpx;
@@ -149,4 +157,7 @@ page{
   text-align: center;
   margin-top: 10rpx;
 }
+
+
+
 

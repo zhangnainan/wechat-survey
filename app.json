@@ -12,7 +12,8 @@
     "pages/survey-create/survey-create",
     "pages/title-create/title-create",
     "pages/title-edit/title-edit",
-    "pages/survey-info-edit/survey-info-edit"
+    "pages/survey-info-edit/survey-info-edit",
+    "pages/survey-settings/survey-settings"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -6,16 +6,16 @@
         问卷名称：
       </view>
       <view class="survey-name">
-        <textarea value="{{survey.surveyName}}" bind:input="surveyNameInput"  maxlength="30" placeholder="请输入" class="surveyname-textarea"></textarea>
+        <textarea value="{{survey.surveyName}}" bindinput="surveyNameInput"  maxlength="30" placeholder="请输入" class="surveyname-textarea"></textarea>
       </view>
     </view>
 
     <view class="sub-container">
       <view class="tag">备注：</view>
       <view class="survey-notes">
-        <textarea value="{{survey.notes}}" bind:input="surveyNotesInput" class="weui-textarea" placeholder="请输入"  class="surveynotes-textarea" maxlength="500"></textarea>
+        <textarea value="{{survey.notes}}" bindinput="surveyNotesInput" class="weui-textarea" placeholder="请输入"  class="surveynotes-textarea" maxlength="500"></textarea>
       </view>
     </view>
-    <button disabled="{{disabled}}" style="width:100%" class="submit" bind:tap="saveSurveyTap">{{saveBtnText}}</button>
+    <button disabled="{{disabled}}" style="width:100%" class="submit" bindtap="saveSurveyTap">{{saveBtnText}}</button>
   </form>
 </view>

@@ -1,13 +1,13 @@
 <view class="container">
   
-  <view class="select" bind:tap="bindShowMsg">
+  <view class="select" bindtap="bindShowMsg">
     <text class="text-padding {{itemSelected?'':'tip'}}">{{tipText}}</text>
     <image style="height:40rpx;width:40rpx;" src="./images/down.png" />
   </view>
   <view class="select_list" wx:if="{{select}}">
     <block wx:for="{{titleList}}" wx:for-item="titleItem" wx:key="id">
-      <view class="select_item" bind:tap="selectItemTap" data-title="{{titleItem}}"><text class="text-padding">{{titleItem.title}}</text></view>
+      <view class="select_item" bindtap="selectItemTap" data-title="{{titleItem}}"><text class="text-padding">{{titleItem.title}}</text></view>
     </block>
   </view>
-  <view class="submit {{submitBgColor}}" bind:tap="submit">{{submitText}}</view>
+  <view class="submit {{submitBgColor}}" bindtap="submit">{{submitText}}</view>
 </view>

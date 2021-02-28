@@ -1,6 +1,6 @@
 <view wx:if="{{!isLoading}}" class="container">
   <block wx:for="{{surveyList}}" wx:key="id">
-    <view  data-survey="{{item}}"  bind:tap="onTap" class="item">
+    <view  data-survey="{{item}}"  bindtap="onTap" class="item">
       <view class="left">
         <view><text class="surveyname">{{item.surveyName}}</text></view>
         <view style="display:none;"><text class="{{item.surveyState=='1'?'openstate':'closestate'}}">{{item.surveyState=="1"?"问卷调查中":"问卷已关闭"}}</text></view>
@@ -12,16 +12,16 @@
       </view>
     </view>
   </block>
-  <view class="submit {{submitBgColor}}" bind:tap="createNewSurveyTap">创建新问卷</view>
+  <view class="submit {{submitBgColor}}" bindtap="createNewSurveyTap">创建新问卷</view>
 </view>
-<view bind:tap="maskTap" class="mask" hidden="{{maskFlag}}"  catchtouchmove='ture'>
+<view bindtap="maskTap" class="mask" hidden="{{maskFlag}}"  catchtouchmove='ture'>
   <view class="mask-bottom">
     <view class="survey-title">
       <text>{{currentSurvey.surveyName}}</text>
     </view>
     <view class="split-line"></view>
     <view class="buttons">
-      <view bind:tap="editTap">
+      <view bindtap="editTap">
         <image src="../survey/images/edit.png"/>
         <text>编辑</text>
       </view>
@@ -31,17 +31,21 @@
         </button>
         <text>分享</text>
       </view>
-      <view bind:tap="viewTap">
+      <view bindtap="viewTap">
         <image src="../survey/images/view.png"/>
         <text>查看</text>
       </view>
-      <view bind:tap="resultTap">
+      <view bindtap="resultTap">
         <image src="../survey/images/result.png"/>
         <text>结果</text>
       </view>
-      <view bind:tap="deleteTap">
+      <view bindtap="deleteTap">
         <image src="../survey/images/delete.png"/>
         <text>删除</text>
+      </view>
+      <view bindtap="clearTap">
+        <image src="../survey/images/clear.png"/>
+        <text>清空数据</text>
       </view>
     </view>
   </view>

@@ -35,7 +35,7 @@ Page({
   
   titleAddSubmit : function(e){
     wx.showLoading({
-      title: '保存中',
+      title: '保存中...',
     })
     this.setData({
       disabled : true,
@@ -115,7 +115,6 @@ Page({
   },
   deleteOptionTap : function(e){
     let index = e.currentTarget.dataset.index
-    console.log(index)
     if(this.data.title.optionModelList.length <= 2){
       wx.showToast({
         title: '不能删除，至少保留两个选项',
@@ -168,6 +167,18 @@ Page({
       title.required = '1'
     }else{
       title.required = '0'
+    }
+    this.setData({
+      title
+    })
+  },
+  isNameColumnChange : function(e){
+    let val = e.detail.value
+    let title = this.data.title
+    if(val){
+      title.isNameColumn = '1'
+    }else{
+      title.isNameColumn = '0'
     }
     this.setData({
       title

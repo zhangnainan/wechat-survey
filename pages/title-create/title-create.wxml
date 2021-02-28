@@ -1,5 +1,5 @@
 <view class="container">
-  <form bind:submit="titleAddSubmit" class="form">
+  <form bindsubmit="titleAddSubmit" class="form">
     <view class="title-name-container">
       <view class="title-name-label">
         <text decode="true"> * 标题</text>
@@ -14,8 +14,8 @@
     <view wx:if="{{titleType == 'single' || titleType == 'multiple'}}" class="option-container">
       <block wx:for="{{optionList}}" wx:for-item="option"  wx:key="*this">
         <view class="option">
-          <image data-index="{{index}}" bind:tap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
-          <input data-index="{{index}}" bind:input="optionNameInput" name="option{{index}}" maxlength="50" value="{{option.optionName}}" class="option-input"></input>
+          <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
+          <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="50" value="{{option.optionName}}" class="option-input"></input>
         </view>
       </block>
       <!-- 
@@ -24,7 +24,7 @@
         <input name="optionName" maxlength="50" class="option-input"></input>
       </view>
       -->
-      <view bind:tap="addOptionTap" class="add">
+      <view bindtap="addOptionTap" class="add">
         <image class="image-add" src="./images/add.png"></image>
         <text class="text-add">添加选项</text>
       </view>
@@ -38,11 +38,14 @@
         <text>此题目必须作答</text>
         <switch name="required" type="switch"></switch>
       </view>
+      <view wx:if="{{titleType == 'text'}}" class="setting">
+        <text>设置为姓名列</text>
+        <switch name="isNameColumn" type="switch"></switch>
+      </view>
     </view>
 
     <view class="btn-container">
       <button style="width:100%;" class="btn-add" form-type="submit" disabled="{{disabled}}">{{add_btn_text}}</button>
     </view>
-
   </form>
 </view>

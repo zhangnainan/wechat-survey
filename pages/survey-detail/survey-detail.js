@@ -1,18 +1,35 @@
 import {SurveyModel} from '../../models/survey-p'
 let surveyModel = new SurveyModel();
+let util = require('../../common/js/util.js')
+let dateFormat = require('../../common/js/dateFormat.js')
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
+    surveyId : '',
     survey:Object,
     isSubmitted : false,
-    submitBgColor:'before-submit-bgcolor',
-    submitText:'提交',
-    isSuccess:false,
-    loading : true
+    submitBgColor : 'before-submit-bgcolor',
+    submitText : '提交',
+    isSuccess : false,
+    isNotStart : false,
+    isTimeOut : false,
+    loading : true,
+    /* test */
+    ismask : Object,
+    wxNickname : '',
+    res : Object
   },
+
+  
+  closeHide:function(e){
+    this.setData({
+      ismask: 'none'
+    });
+    console.log('ismask : '+this.data.ismask)
+  },
+  
 
   /**
    * 生命周期函数--监听页面加载
@@ -22,18 +39,67 @@ Page({
       title: '',
     })
     const surveyId = options.surveyId
-    wx.showLoading()
-    surveyModel.getSurvey(surveyId).then(res=>{
+    this.setData({
+      surveyId : surveyId
+    })
+    this.getSettingAndLoadData()
+  },
+  bindGetUserInfo : function(res){
+    this.getSettingAndLoadData()
+  },
+  getSettingAndLoadData : function(){
+    let that = this
+    wx.getSetting({
+      success: res => {        
+        if (res.authSetting['scope.userInfo']){
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框          
+          wx.getUserInfo({
+            success: res => {
+              that.setData({
+                ismask: 'none',
+                wxNickname : res.userInfo.nickName,
+                res : res
+              });
+              that.loadSurveyData(this.data.surveyId, that.data.wxNickname)
+            }
+          })
+        }else{
+          this.setData({
+            ismask: 'block'
+          });
+        }
+      }
+    });
+  },
+
+  loadSurveyData : function(surveyId, wxNickname){
+    wx.showLoading({
+      title : '加载中...'
+    })
+    
+    surveyModel.loadSurveyByIdAndUserNickName(surveyId, wxNickname).then(res=>{
       wx.hideLoading()
       let message = res.message
       if(message == 'success'){
         wx.setNavigationBarTitle({
           title: res.data.surveyName,
         })
-        this.setData({
-          survey:res.data,
-          loading : false
-        })
+        let currentDateTime = dateFormat.dateFormat('yyyy-MM-dd hh:mm:ss', new Date())
+        let beginDateTime = res.data.beginDateTime
+        let endDateTime = res.data.endDateTime
+        if(!util.isNull(beginDateTime) && !util.isNull(endDateTime)){
+          this.setData({
+            survey:res.data,
+            loading : false,
+            isNotStart : beginDateTime > currentDateTime ? true : false,
+            isTimeOut : endDateTime < currentDateTime ? true : false
+          })
+        }else{
+          this.setData({
+            survey:res.data,
+            loading : false
+          })
+        }
       }else{
         wx.showToast({
           title: '服务端发生了错误',
@@ -48,18 +114,9 @@ Page({
         title: '发生了一个错误,请联系管理员',
       })
     })
-    /*
-    surveyModel.getSurvey(surveyId,(res)=>{
-      this.setData({
-        survey:res.data,
-        loading : false
-      })
-      wx.hideLoading()
-    })
-   */
   },
 
-  radioChange:function(event){
+  radioChange : function(event){
     const titleId = event.currentTarget.dataset.titleid
     const optionId = event.detail.value
     const survey = this.data.survey
@@ -124,6 +181,7 @@ Page({
     if(this.data.isSubmitted){
       return
     }
+
     let checkResult = this.checkData()
     if(!checkResult.isLegal){
       wx.showToast({
@@ -190,7 +248,8 @@ Page({
     wx.showLoading({
       title : '提交中...'
     })
-    surveyModel.submitSurvey(this.data.survey).then(res=>{
+    
+    surveyModel.submitSurvey(this.data.survey, this.data.wxNickname).then(res=>{
       wx.hideLoading()
       if(res.message != 'success'){
         wx.showToast({
@@ -260,7 +319,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    
   },
 
   /**

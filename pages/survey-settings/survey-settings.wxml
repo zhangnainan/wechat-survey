@@ -1,0 +1,25 @@
+<!--<view class="container">-->
+  <view class="setting-container">
+    <form bindsubmit="settingSubmit" class="form">
+      <view class="time-selection">
+        <text>开始时间</text>
+        <picker name="beginDateTime" mode="multiSelector" value="{{beginDateTime}}" bindchange="changeBeginDateTime" bindcolumnchange="changeBeginDateTimeColumn" range="{{beginDateTimeArr}}">
+          <view class="tui-picker-detail">
+            {{beginDateTimeArr[0][beginDateTime[0]]}}-{{beginDateTimeArr[1][beginDateTime[1]]}}-{{beginDateTimeArr[2][beginDateTime[2]]}} {{beginDateTimeArr[3][beginDateTime[3]]}}:{{beginDateTimeArr[4][beginDateTime[4]]}}:{{beginDateTimeArr[5][beginDateTime[5]]}}
+          </view>
+        </picker>
+      </view>
+      <view class="split-line"></view>
+      <view class="time-selection">
+        <text>结束时间</text>
+        <picker name="endDateTime" mode="multiSelector" value="{{endDateTime}}" bindchange="changeEndDateTime" bindcolumnchange="changeEndDateTimeColumn" range="{{endDateTimeArr}}">
+          <view class="tui-picker-detail">
+            {{endDateTimeArr[0][endDateTime[0]]}}-{{endDateTimeArr[1][endDateTime[1]]}}-{{endDateTimeArr[2][endDateTime[2]]}} {{endDateTimeArr[3][endDateTime[3]]}}:{{endDateTimeArr[4][endDateTime[4]]}}:{{endDateTimeArr[5][endDateTime[5]]}}
+          </view>
+        </picker>
+      </view>
+      <view class="split-line"></view>
+      <button style="width:100%" disabled="{{disabled}}" class="btn" form-type="submit">{{btnText}}</button>
+    </form>
+  </view>
+<!-- </view> -->

@@ -1,0 +1,13 @@
+<!--pages/home/home.wxml-->
+<!-- <image class="back-img" src="../images/background.jpg" /> -->
+
+<view class="home-container">
+  <view class="item" data-surveytype="questionnaire" bindtap="itemTap">
+    <image src="./images/questionnaire3.png" />
+    <text>问卷调查</text>
+  </view>
+  <view class="item" data-surveytype="knowledge-competition" bindtap="itemTap">
+    <image src="./images/knowledge3.png" />
+    <text>知识竞赛</text>
+  </view>
+</view>

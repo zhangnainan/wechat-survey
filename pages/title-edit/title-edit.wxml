@@ -5,17 +5,35 @@
         <text decode="true"> * 标题</text>
       </view>
       <view class="title-name">
-        <textarea bindinput="titleNameInput" name="title"   maxlength="30"  class="titlename-textarea" value="{{title.title}}"></textarea>
+        <textarea bindinput="titleNameInput" auto-focus="true" style="height:3em"  auto-height="true" name="title"   maxlength="200"  class="titlename-textarea" value="{{title.title}}"></textarea>
       </view>
     </view>
     <view wx:if="{{title.titleType == '0' || title.titleType == '1'}}" class="label">
     选项 
     </view>
     <view wx:if="{{title.titleType == '0' || title.titleType == '1'}}" class="option-container">
-      <block wx:for="{{title.optionModelList}}" wx:for-item="option"  wx:key="id">
+      <radio-group wx:if="{{title.titleType == '0' && surveyType=='knowledge-competition'}}" bindchange="radioGroupChange">
+        <block wx:for="{{title.optionModelList}}" wx:for-item="option" >
+          <view class="option">
+            <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
+            <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="200" value="{{option.optionName}}" class="option-input"></input>
+            <radio value="{{option.id}}" checked="{{option.corrected}}"></radio>
+          </view>
+        </block>
+      </radio-group>
+      <checkbox-group wx:if="{{title.titleType == '1' && surveyType=='knowledge-competition'}}" bindchange="checkboxGroupChange">
+        <block wx:for="{{title.optionModelList}}" wx:for-item="option" >
+          <view class="option">
+            <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
+            <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="200" value="{{option.optionName}}" class="option-input"></input>
+            <checkbox value="{{option.id}}" checked="{{option.corrected}}"></checkbox>
+          </view>
+        </block>
+      </checkbox-group>
+      <block wx:if="{{surveyType!='knowledge-competition'}}" wx:for="{{title.optionModelList}}" wx:for-item="option" >
         <view class="option">
           <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
-          <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="50" value="{{option.optionName}}" class="option-input"></input>
+          <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="200" value="{{option.optionName}}" class="option-input"></input>
         </view>
       </block>
       <!-- 
@@ -30,19 +48,33 @@
       </view>
     </view>
 
-    <view class="label">
-    设置 
-    </view>
-    <view class="setting-container">
-      <view class="setting">
-        <text>此题目必须作答</text>
-        <switch bindchange="requireChange" checked="{{title.required == '1' ? true : false}}" name="required" type="switch"></switch>
+    <block  wx:if="{{title.titleType == '2' && surveyType=='knowledge-competition'}}" >
+      <view class="label">
+      答案： 
       </view>
-      <view wx:if="{{title.titleType == '2'}}" class="setting">
-        <text>设置为姓名列</text>
-        <switch bindchange="isNameColumnChange" checked="{{title.isNameColumn == '1' ? true : false}}" name="isNameColumn" type="switch"></switch>
+      <view class="text-title-answer-container">
+        <view class="title-name">
+          <textarea bindinput="textTitleAnswerInput" auto-focus="true" style="height:3em"  auto-height="true"  maxlength="200"  class="titlename-textarea" value="{{title.answerModelList[0].answer}}"></textarea>
+        </view>
       </view>
-    </view>
+    </block>
+
+    <block wx:if="{{!(surveyType=='knowledge-competition')}}">
+      <view class="label">
+      设置 
+      </view>
+      <view class="setting-container">
+        <view class="setting">
+          <text>此题目必须作答</text>
+          <switch bindchange="requireChange" checked="{{title.required == '1' ? true : false}}" name="required" type="switch"></switch>
+        </view>
+        <view wx:if="{{title.titleType == '2'}}" class="setting">
+          <text>设置为姓名列</text>
+          <switch bindchange="isNameColumnChange" checked="{{title.isNameColumn == '1' ? true : false}}" name="isNameColumn" type="switch"></switch>
+        </view>
+      </view>
+    </block>
+    
 
     <view class="btn-container">
       <button style="width:100%;" class="btn-add" form-type="submit" disabled="{{disabled}}">{{add_btn_text}}</button>

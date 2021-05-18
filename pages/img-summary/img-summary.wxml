@@ -1,0 +1,18 @@
+<view class="wrap">
+  <view class="myTable">
+    <view class="myThead">
+      <view class="myTr">
+        <view class="myTd">序号</view>
+        <view style="width: 80%;" class="myTd">图片</view>
+      </view>
+    </view>
+    <view class="myTbody">
+      <view class="myTr" wx:for="{{answerList}}" wx:for-item="submitAnswerItem" wx:key="id">
+        <view class="myTd">{{index+1}}</view>
+        <view class="myTd">
+          <image lazy-load="true" data-fileName="{{submitAnswerItem.answer}}" bindtap="imgTap" class="img" mode="heightFix" src="{{imgVisitUrl+submitAnswerItem.answer}}" />
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

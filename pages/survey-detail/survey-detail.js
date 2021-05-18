@@ -1,7 +1,9 @@
 import {SurveyModel} from '../../models/survey-p'
+import {config} from '../../config.js'
 let surveyModel = new SurveyModel();
 let util = require('../../common/js/util.js')
 let dateFormat = require('../../common/js/dateFormat.js')
+
 Page({
   /**
    * 页面的初始数据
@@ -19,7 +21,15 @@ Page({
     /* test */
     ismask : Object,
     wxNickname : '',
-    res : Object
+    res : Object,
+
+    photos : Array,
+    imageUploading : false,
+    progress : 0,
+    imgVisitUrl : config.img_visit_url,
+    wxOpenId : String,
+    canIUseGetUserProfile : false,
+    isAuthorizing : false
   },
 
   
@@ -27,7 +37,6 @@ Page({
     this.setData({
       ismask: 'none'
     });
-    console.log('ismask : '+this.data.ismask)
   },
   
 
@@ -38,46 +47,180 @@ Page({
     wx.setNavigationBarTitle({
       title: '',
     })
+    
     const surveyId = options.surveyId
+    let canIUseGetUserProfile = false
+    if(wx.getUserProfile){
+      canIUseGetUserProfile = true
+    }
     this.setData({
-      surveyId : surveyId
+      surveyId : surveyId,
+      canIUseGetUserProfile : canIUseGetUserProfile
     })
-    this.getSettingAndLoadData()
+    this.login()
+    /*
+    let wxOpenId = wx.getStorageSync('zjwjOpenId') 
+    if(!util.isNull(wxOpenId)){      
+      this.setData({
+        wxOpenId : wxOpenId
+      })
+      this.getSettingAndLoadData()
+    }else{
+      this.login()
+    }
+    */
+    
+    
+  //  this.getSettingAndLoadData()
   },
+  login : function(){
+    wx.showLoading({
+      title : '加载中...',
+      icon : 'none'
+    })
+    let that = this
+    this._authBtnLock()
+    wx.login({
+      complete: (res) => {
+        let errMsg = res.errMsg
+        if(errMsg == 'login:ok'){
+          that.getOpenId(res.code)
+        }else{
+          wx.showToast({
+            title: '请检查网络是否连接',
+            icon : 'none'
+          })
+        }
+      },
+    })
+  },
+
+  getOpenId : function(code){
+    surveyModel.getOpenId(code).then(res=>{
+      let message = res.message
+      if(message == 'success'){
+        let wxOpenId = res.data
+        this._authBtnUnlock()
+        this.setData({
+          wxOpenId : wxOpenId
+        })
+        //wx.setStorageSync('zjwjOpenId', wxOpenId)
+        wx.hideLoading()
+        //console.log('openId getSettingAndLoadData')
+        if(!this.data.canIUseGetUserProfile){
+          this.getSettingAndLoadData()
+        }
+      }else{
+        wx.showToast({
+          title: '服务端发生了错误',
+        }) 
+      }
+    },res=>{
+    //  wx.hideLoading()
+      wx.showToast({
+        title: '发生了一个错误,请联系管理员',
+      })
+    })
+  },
+
   bindGetUserInfo : function(res){
+    if(this.data.isAuthorizing){
+      return
+    }
+    this._authBtnLock()
+    //console.log('after auth btn lock')
+    //console.log('bindGetUserInfo getSettingAndLoadData')
     this.getSettingAndLoadData()
   },
+
   getSettingAndLoadData : function(){
     let that = this
+    if(!this.data.canIUseGetUserProfile){
+      wx.getSetting({
+        success: res => {        
+          //console.log('scope.userInfo:'+res.authSetting['scope.userInfo'])
+          if (res.authSetting['scope.userInfo']){
+            // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框                      
+            console.log('getUserInfo')
+            wx.getUserInfo({
+              success: res => {
+                that.setData({
+                  ismask: 'none',
+                  wxNickname : res.userInfo.nickName,
+                  res : res
+                });
+                that.loadSurveyData(this.data.surveyId, that.data.wxNickname, that.data.wxOpenId)
+              }
+            })
+            
+          }else{
+            this.setData({
+              ismask: 'block'
+            });
+          }
+        }
+      });
+    }else{
+      wx.getUserProfile({
+        desc: '用于获取昵称', 
+        success: (res) => {
+          that.setData({
+            ismask: 'none',
+            wxNickname : res.userInfo.nickName,
+            res : res
+          });
+          that.loadSurveyData(this.data.surveyId, that.data.wxNickname, that.data.wxOpenId)
+        }
+      })
+    }
+     /*
     wx.getSetting({
       success: res => {        
+        //console.log('scope.userInfo:'+res.authSetting['scope.userInfo'])
         if (res.authSetting['scope.userInfo']){
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框          
-          wx.getUserInfo({
-            success: res => {
-              that.setData({
-                ismask: 'none',
-                wxNickname : res.userInfo.nickName,
-                res : res
-              });
-              that.loadSurveyData(this.data.surveyId, that.data.wxNickname)
-            }
-          })
+          if(that.data.canIUseGetUserProfile){
+            //console.log('canIUseGetUserProfile')
+            wx.getUserProfile({
+              desc: '用于获取昵称', 
+              success: (res) => {
+                that.setData({
+                  ismask: 'none',
+                  wxNickname : res.userInfo.nickName,
+                  res : res
+                });
+                that.loadSurveyData(this.data.surveyId, that.data.wxNickname, that.data.wxOpenId)
+              }
+            })
+          }else{
+            console.log('getUserInfo')
+            wx.getUserInfo({
+              success: res => {
+                that.setData({
+                  ismask: 'none',
+                  wxNickname : res.userInfo.nickName,
+                  res : res
+                });
+                that.loadSurveyData(this.data.surveyId, that.data.wxNickname, that.data.wxOpenId)
+              }
+            })
+          }
         }else{
           this.setData({
             ismask: 'block'
           });
         }
       }
-    });
+    });*/
   },
 
-  loadSurveyData : function(surveyId, wxNickname){
+  loadSurveyData : function(surveyId, wxNickname, wxOpenId){
+    this._authBtnUnlock()
     wx.showLoading({
       title : '加载中...'
     })
     
-    surveyModel.loadSurveyByIdAndUserNickName(surveyId, wxNickname).then(res=>{
+    surveyModel.loadSurveyByIdAndUserNickName(surveyId, wxNickname, wxOpenId).then(res=>{
       wx.hideLoading()
       let message = res.message
       if(message == 'success'){
@@ -116,7 +259,34 @@ Page({
     })
   },
 
+  radiotap : function(event){
+    let titleId = event.currentTarget.dataset.titleid
+    let optionId = event.currentTarget.dataset.optionid
+    let survey = this.data.survey
+    for(let i = 0; i < survey.titleList.length; i++){
+      let title = survey.titleList[i]
+      if(titleId == title.id){
+        for(let j=0; j < title.optionModelList.length; j++){
+          let option = title.optionModelList[j]
+          if(option.id == optionId){
+            if(option.selected){
+              option.selected = false
+            }else{
+              option.selected = true
+            }
+          }else{
+            option.selected = false
+          }
+        }
+        this.setData({
+          survey
+        })
+        break
+      }
+    }
+  },
   radioChange : function(event){
+    /*
     const titleId = event.currentTarget.dataset.titleid
     const optionId = event.detail.value
     const survey = this.data.survey
@@ -126,17 +296,17 @@ Page({
         for(let j=0; j < title.optionModelList.length; j++){
           let option = title.optionModelList[j]
           if(option.id == optionId){
-            option.selected = true
+            option.selected = !option.selected
           }else{
             option.selected = false
           }
         }
+        this.setData({
+          survey
+        })
+        break
       }
-    }
-    this.setData({
-      survey
-    })
-    
+    }*/
   },
 
   checkboxChange:function(event){
@@ -154,12 +324,12 @@ Page({
             option.selected = false
           }
         }
+        this.setData({
+          survey
+        })
+        break
       }
     }
-    this.setData({
-      survey
-    })
-      
   },
 
   inputChange:function(event){
@@ -170,10 +340,165 @@ Page({
       let title = survey.titleList[i]
       if(titleId == title.id){
         title.text = text
+        this.setData({
+          survey
+        })
+        break
       }
     }
+    
+  },
+
+  uploadComplete : function(fileName, titleId){
+    if(util.isNull(fileName) || util.isNull(titleId)){
+      return
+    }
+    const survey = this.data.survey
+    for(let i = 0; i < survey.titleList.length; i++){
+      let title = survey.titleList[i]
+      if(titleId == title.id){
+        title.text = fileName
+        this.setData({
+          survey
+        })
+        break
+      }
+    }
+    
+  },
+
+  chooseImage : function(event){
+    const titleId = event.currentTarget.dataset.titleid
+    let systemInfo = wx.getSystemInfoSync();
+    if(systemInfo.platform == 'ios'){
+      this.iosChooseImage(titleId)
+    }else{
+      this.androidChooseImage(titleId)
+    }    
+  },
+
+  androidChooseImage : function(titleId){
+    let that = this
+    wx.chooseImage({
+      count : 1,
+      sizeType : ['original','compressed'],
+      sourceType : ['album','camera'],
+      complete(res){
+        let errMsg = res.errMsg
+        if(!(errMsg == 'chooseImage:ok')){
+          return
+        }
+        let tempFilePaths = res.tempFilePaths
+        that.setData({
+          photos : tempFilePaths,
+        })
+        that.uploadImage(titleId)
+      }
+    })
+  },
+  iosChooseImage : function(titleId){
+    let that = this
+    wx.chooseImage({
+      count : 1,
+      sizeType : ['original','compressed'],
+      sourceType : ['album','camera'],
+      complete(res){
+        let errMsg = res.errMsg
+        if(!(errMsg == 'chooseImage:ok')){
+          wx.showToast({
+            title: errMsg,
+          })
+          return
+        }
+        let tempFilePaths = res.tempFilePaths
+        that.setData({
+          photos : tempFilePaths,
+        })
+        that.uploadImage(titleId)
+      }
+    })
+  },
+
+    /**
+   * 上传照片
+   */
+  uploadImage: function(titleId) {
     this.setData({
-      survey
+      imageUploading : true
+    })
+    let that = this
+    let uploadTask = wx.uploadFile({
+      url: config.api_base_url+'survey/upload',
+      filePath: that.data.photos[0],
+      name: 'file',
+     /* formData: {
+        'user': '黑柴哥'
+      },*/
+      success: function (res) {
+        let statusCode = res.statusCode
+        if(statusCode == 200){
+          // res.data  为string类型所以先转换成JSON
+          let retData = JSON.parse(res.data)
+          let fileName = retData.data
+          that.uploadComplete(fileName,titleId)
+        }
+      },
+      fail:function(res){
+        
+      }
+    })
+
+
+    uploadTask.onProgressUpdate((res) =>{
+      let progress = res.progress
+      that.setData({
+        progress : progress
+      })
+      if(progress == 100){
+        that.setData({
+          imageUploading : false
+        })
+      }
+    })
+  },
+
+
+  deleteImageTap : function(event){
+    const titleId = event.currentTarget.dataset.titleid
+    let that = this
+    wx.showModal({
+      title : '提示',
+      content : '确定删除该图片？',
+      success (res) {
+        if (res.confirm){
+          that.deleteImage(titleId)
+        } 
+      }
+    })
+  },
+
+  deleteImage : function(titleId){
+    if(util.isNull(titleId)){
+      return
+    }
+    const survey = this.data.survey
+    for(let i = 0; i < survey.titleList.length; i++){
+      let title = survey.titleList[i]
+      if(titleId == title.id){
+        title.text = ""
+        this.setData({
+          survey
+        })
+        break
+      }
+    }
+  },
+
+  previewImg : function(event){
+    const fileName = event.currentTarget.dataset.filename
+    let that = this
+    wx.previewImage({
+      urls: [that.data.imgVisitUrl+fileName],
     })
   },
 
@@ -225,7 +550,7 @@ Page({
         }
       }
       
-      if(title.titleType == '2'){ // text
+      if(title.titleType == '2' || title.titleType == '3'){ // 填空题或者文件上传题
         let isAnswered = false
         if(title.text.trim() != ''){
           isAnswered = true
@@ -239,6 +564,7 @@ Page({
     }
     return checkResult
   },
+  
   commitToServer:function(){
     this.setData({
       submitBgColor:'after-submit-bgcolor',
@@ -249,7 +575,7 @@ Page({
       title : '提交中...'
     })
     
-    surveyModel.submitSurvey(this.data.survey, this.data.wxNickname).then(res=>{
+    surveyModel.submitSurvey(this.data.survey, this.data.wxNickname, this.data.wxOpenId).then(res=>{
       wx.hideLoading()
       if(res.message != 'success'){
         wx.showToast({
@@ -278,34 +604,21 @@ Page({
         isSubmitted : false
       })
     })
-    /*
-    surveyModel.submitSurvey(this.data.survey,(res)=>{
-      console.log(res)
-      if(res.message != 'success'){
-        wx.showToast({
-          title: res.message,
-          icon:'none'
-        })
-        this.setData({
-          submitBgColor:'before-submit-bgcolor',
-          submitText : '提交',
-          isSubmitted : false
-        })
-        
-      }else{
-        this.setData({
-          isSuccess : true
-        })
-      }
-    },(err)=>{
-      console.log('err')
-      console.log(err)
-      this.setData({
-        submitBgColor:'before-submit-bgcolor',
-        submitText : '提交',
-        isSubmitted : false
-      })
-    })*/
+  },
+
+  _authBtnLock : function(){
+    if(this.data.isAuthorizing){
+      return
+    }
+    this.setData({
+      isAuthorizing : true
+    })
+  },
+
+  _authBtnUnlock : function(){
+    this.setData({
+      isAuthorizing : false
+    })
   },
 
   /**

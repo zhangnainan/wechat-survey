@@ -121,7 +121,7 @@ page{
   /*justify-content: space-around;*/
   margin-bottom: 20rpx;
   justify-content: flex-start; 
- flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .buttons view {

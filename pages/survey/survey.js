@@ -1,11 +1,14 @@
 import {SurveyModel} from '../../models/survey-p'
 let surveyModel = new SurveyModel();
+let SurveyType = require('../../common/js/SurveyType.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    surveyType : String,
+    createText : String,
     surveyList:[],
     maskFlag:true,
     currentSurvey:Object,
@@ -17,11 +20,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-   
-    wx.setNavigationBarTitle({
-      title: '问卷列表',
+    let surveyType = options.surveyType
+    this.setData({
+      surveyType : surveyType,
+      createText : SurveyType.isQuestionnaire(surveyType) ? '创建新问卷' : '创建知识竞赛'
     })
-    this._getSurveyList()
+    if(SurveyType.isQuestionnaire(surveyType)){
+      wx.setNavigationBarTitle({
+        title: '问卷列表',
+      })
+    }else{
+      wx.setNavigationBarTitle({
+        title: '知识竞赛列表',
+      })
+    }
+    
+    //this._getSurveyList(surveyType)
   },
 
   onTap:function(event){
@@ -43,7 +57,7 @@ Page({
   editTap:function(event){
     const surveyId = this.data.currentSurvey.id
     wx.navigateTo({
-      url: `/pages/survey-edit/survey-edit?surveyId=${surveyId}`,
+      url: `/pages/survey-edit/survey-edit?surveyId=${surveyId}`+`&surveyType=`+this.data.surveyType,
     })
   },
   shareTap:function(event){
@@ -63,14 +77,21 @@ Page({
 
   viewTap : function(event){
     const surveyId = this.data.currentSurvey.id
-    wx.navigateTo({
-      url: `/pages/survey-detail/survey-detail?surveyId=${surveyId}`,
-    })
+    if(SurveyType.isKnowledgeCompetition(this.data.surveyType)){
+      wx.navigateTo({
+        url: `/pages/contest-detail/contest-detail?surveyId=${surveyId}`,
+      })
+    }else{
+      wx.navigateTo({
+        url: `/pages/survey-detail/survey-detail?surveyId=${surveyId}`,
+      })
+    }
+    
   },
 
   createNewSurveyTap : function(event){
     wx.navigateTo({
-      url: `/pages/survey-create/survey-create`,
+      url: `/pages/survey-create/survey-create?surveyType=`+this.data.surveyType,
     })
   },
 
@@ -102,6 +123,7 @@ Page({
   },
 
   _deleteSurvey : function(surveyId){
+    
     wx.showLoading({
       title : '删除中...'
     })
@@ -114,8 +136,11 @@ Page({
           icon :'none',
           duration : 2000
         })
-        setTimeout(function(){},2000)
-        this._getSurveyList()
+        this._getSurveyList(this.data.surveyType)
+        /** 
+        setTimeout(function(){
+        },2000)*/
+        
       }else{
         wx.showToast({
           title: message,
@@ -146,8 +171,10 @@ Page({
           icon :'none',
           duration : 2000
         })
-        setTimeout(function(){},2000)
-        this._getSurveyList()
+        setTimeout(function(){
+          
+        },2000) 
+        this._getSurveyList(this.data.surveyType)
       }else{
         wx.showToast({
           title: message,
@@ -164,12 +191,12 @@ Page({
     })
 
   },
-  _getSurveyList : function(){
+  _getSurveyList : function(surveyType){
     wx.showLoading({
       title: '加载中...',
     })
     const userId = getApp().globalData.userId
-    surveyModel.getSurveyList(userId).then((res)=>{
+    surveyModel.getSurveyList(userId,surveyType).then((res)=>{
       wx.hideLoading()
       if(res.data != null && res.data != undefined ){
         this.setData({
@@ -183,7 +210,6 @@ Page({
         })
       }
     },(res)=>{
-      
       wx.hideLoading()
       wx.showToast({
         title: '发生了一个错误，请联系管理员',
@@ -210,7 +236,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this._getSurveyList()
+    this._getSurveyList(this.data.surveyType)
   },
 
 
@@ -246,10 +272,20 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    return {
-      title:this.data.currentSurvey.surveyName,
-      imageUrl:'../survey/images/survey1.png',
-      path:'pages/survey-detail/survey-detail?surveyId='+this.data.currentSurvey.id
+    let surveyType = this.data.surveyType
+    if(SurveyType.isQuestionnaire(surveyType)){
+      return {
+        title:this.data.currentSurvey.surveyName,
+        imageUrl:'../survey/images/survey1.png',
+        path:'pages/survey-detail/survey-detail?surveyId='+this.data.currentSurvey.id
+      }
+    }else{
+      return {
+        title:this.data.currentSurvey.surveyName,
+        imageUrl:'../survey/images/competition.jpg',
+        path:'pages/contest-detail/contest-detail?surveyId='+this.data.currentSurvey.id
+      }
     }
+    
   }
 })

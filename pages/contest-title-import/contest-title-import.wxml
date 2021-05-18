@@ -1,0 +1,8 @@
+<view class="main-container">
+  <view class="file-container">
+    <input disabled="true" value="{{fileName}}" />
+    <view bindtap="selectFile"  class="select">选择</view>
+  </view>
+
+  <button bindtap="importFile" style="width:100%;" disabled="{{btnDisabled}}" class="save-btn">{{saveBtnText}}</button>
+</view>

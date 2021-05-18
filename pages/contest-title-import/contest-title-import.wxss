@@ -1,0 +1,47 @@
+.main-container{
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.file-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.file-container input{
+  width: 100%;
+  height: 65rpx;
+  line-height: 65rpx;
+  border: solid 1rpx #999;
+  
+}
+
+
+
+
+
+.select{
+  background-color: #3aa8cc;
+  color: white;
+  height: 65rpx;
+  width: 120rpx;
+  line-height: 65rpx;
+  text-align: center;
+  font-size: 32rpx;
+  border: solid 1rpx #3aa8cc;
+}
+
+.save-btn{
+  background-color: #3aa8cc;
+  color: white;
+  padding: 0;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-top: 60rpx;
+}

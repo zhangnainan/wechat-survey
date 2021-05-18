@@ -1,0 +1,76 @@
+.container{
+  width: 100%;
+  height: 100%;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.title-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+form{
+  width: 100%;
+}
+
+.title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  font-size: 32rpx;
+  color: darkgray;
+  margin-top: 20rpx;
+  line-height: 50rpx;
+  text-align : justify;
+  text-align-last: left;
+}
+.title text{
+  width: 75%;
+}
+.title-sort{
+  width: 15%;
+  color: rgb(58, 168, 204);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  font-size: 32rpx;
+  line-height: 50rpx;
+  
+}
+.title checkbox{
+  width: 10%;
+  padding: 0;
+  line-height: 50rpx;
+  transform: scale(.8);
+}
+
+.sort-columns{
+  margin-top: 30rpx;
+  display: flex;
+  flex-direction: row;
+  font-size: 32rpx;
+}
+.sort-columns text{
+  white-space: nowrap;
+}
+.sort-columns input{
+  width: 100%;
+  border-bottom: 1px solid lightgray;
+}
+
+.btn{
+  margin-top: 50rpx;
+  background-color : rgb(58, 168, 204);
+  color: white;
+  padding: 0rpx;
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 45rpx;
+}

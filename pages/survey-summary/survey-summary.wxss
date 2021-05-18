@@ -218,6 +218,16 @@ page{
   border-bottom: 1px dashed #959699;
 }
 
+.export-btn{
+  background-color: rgb(58, 168, 204);
+  color: white;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-top: 80rpx;
+  padding: 0;
+  font-size: 45rpx;
+}
+
 .mask{
   width: 100%;
   height: 100%;
@@ -269,6 +279,7 @@ page{
   font-size: 28rpx;
   color: #999;
   flex-wrap: wrap;
+  text-align: justify;
   justify-content: flex-start;
 }
 .name{
@@ -276,6 +287,25 @@ page{
   color: #999;
 }
 
+
+.myTd.is-img{
+  line-height: 1;
+}
+.myTd.is-img.img{
+  display: inline-block;
+  vertical-align: middle;
+}
+.myTd.is-img::after{
+  content: " ";
+  width:1px;
+  height:100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.img{
+  width: 200rpx;
+}
 
 
 

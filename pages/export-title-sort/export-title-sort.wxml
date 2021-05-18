@@ -1,0 +1,22 @@
+<view class="container">
+  <view class="title-container">
+    <form bindsubmit="formSubmit">
+      <checkbox-group name="selectedIds" bindchange="checkboxChange">
+        <block wx:for="{{titleList}}" wx:for-item="title" wx:key="id">
+          <view class="title">
+            <text>{{title.title}}</text>
+            <!--<text class="sort-text">{{title.titleSequence==0?'':title.titleSequence}}</text>-->
+            <view class="title-sort">{{title.titleSequence==0?'未选择':title.titleSequence}}</view>
+            <!-- <view class="title-sort">3</view> -->
+            <checkbox  value="{{title.id}}" checked="{{option.selected}}" />
+          </view>
+        </block>
+      </checkbox-group>
+      <view class="sort-columns">
+        <text>排序列数：</text>
+        <input name="sortCols" type="number"></input>
+      </view>
+      <button style="width:100%;" class="btn" disabled="{{isDisabled}}" form-type="submit" >确  定</button>
+    </form>
+  </view>
+</view>

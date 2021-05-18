@@ -34,12 +34,18 @@ page{
   width: 100%;
 }
 
+.text-title-answer{
+  background-color: #ffffff;
+  margin-top: 20rpx;
+  width: 100%;
+}
+
 .titlename-textarea{
   width: 100%;
   padding: 10rpx;
   border: 1px solid #999;
-  height: 70rpx;
-  line-height: 50rpx;
+  min-height: 60rpx;
+  line-height: 30rpx;
   font-size: 30rpx;
   border-radius: 20rpx;
   box-sizing: border-box;
@@ -52,7 +58,7 @@ page{
   font-size: 30rpx;
 }
 
-.option-container,.setting-container{
+.option-container,.setting-container,.text-title-answer-container{
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -77,7 +83,7 @@ page{
 
 .option-input{
   flex: 1;
-  margin-left: 30rpx;
+  margin-left: 15rpx;
 }
 
 .add{
@@ -118,4 +124,9 @@ switch{
 .btn-add{
   background-color: #3aa8cc;
   color: white;
+}
+
+checkbox{
+  transform: scale(.8);
+  margin-left: 15rpx;
 }

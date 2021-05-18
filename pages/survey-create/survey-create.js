@@ -1,6 +1,7 @@
 import {SurveyModel} from '../../models/survey-p'
-
+let SurveyType = require('../../common/js/SurveyType.js')
 let surveyModel = new SurveyModel();
+let util = require('../../common/js/util.js')
 
 Page({
 
@@ -9,8 +10,12 @@ Page({
    */
   data: {
     submitBgColor: 'before-submit-bgcolor',
+    surveyType : String,
     surveyName : '',
+    answerTitleNum : 0,
+    scoreScale : 0,
     surveyNotes : '',
+    surveyNameLabel : String,
     disabled : false,
     saveBtnText : '保 存'
   },
@@ -19,9 +24,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.setNavigationBarTitle({
-      title: '创建问卷',
+    let surveyType = options.surveyType
+    this.setData({
+      surveyType : surveyType
     })
+    if(SurveyType.isQuestionnaire(surveyType)){
+      wx.setNavigationBarTitle({
+        title: '创建问卷',
+      })
+      this.setData({
+        surveyNameLabel : '问卷名称'
+      })
+    }else{
+      wx.setNavigationBarTitle({
+        title: '创建知识竞赛',
+      })
+      this.setData({
+        surveyNameLabel : '知识竞赛名称'
+      })
+    }
+    
   }, 
 
   saveSurveyTap : function(e){
@@ -36,7 +58,12 @@ Page({
       return
     }
     const userId = getApp().globalData.userId
-    surveyModel.saveSurvey(userId,this.data.surveyName,this.data.surveyNotes).then(res=>{
+    let surveyName = this.data.surveyName
+    let surveyNotes = this.data.surveyNotes
+    let surveyType = this.data.surveyType
+    let answerTitleNum = this.data.answerTitleNum
+    let scoreScale = this.data.scoreScale
+    surveyModel.saveSurvey(userId,surveyName,surveyNotes,surveyType,answerTitleNum,scoreScale).then(res=>{
       let message = res.message
       if(message == 'success'){
         const surveyId = res.data.id
@@ -46,7 +73,7 @@ Page({
           duration : 3000
         })
         wx.redirectTo({
-          url: '/pages/survey-edit/survey-edit?surveyId='+surveyId,
+          url: '/pages/survey-edit/survey-edit?surveyId='+surveyId+'&surveyType='+this.data.surveyType,
         })
       }else{
         if(message == 'error.exists'){
@@ -83,6 +110,20 @@ Page({
     })
   },
 
+  answerTitleNumInput : function(e){
+    let answerTitleNum =  e.detail.value
+    this.setData({
+      answerTitleNum
+    })
+  },
+
+  scoreScaleInput : function(e){
+    let scoreScale =  e.detail.value
+    this.setData({
+      scoreScale
+    })
+  },
+
   surveyNotesInput : function(e){
     let surveyNotes = e.detail.value
     this.setData({
@@ -99,6 +140,36 @@ Page({
       })
       return false
     }
+
+    if(SurveyType.isKnowledgeCompetition(this.data.surveyType)){
+      let answerTitleNum = this.data.answerTitleNum
+      if(util.isNull(answerTitleNum) ||  answerTitleNum <=0){
+        wx.showToast({
+          title: '答题数设置非法!',
+          icon : 'none'
+        })
+        return false
+      }
+    }
+
+    if(SurveyType.isKnowledgeCompetition(this.data.surveyType)){
+      let scoreScale = this.data.scoreScale
+      if(util.isNull(scoreScale) ||  scoreScale <=0 ){
+        wx.showToast({
+          title: '分制设置非法!',
+          icon : 'none'
+        })
+        return false
+      }
+      if(scoreScale%this.data.answerTitleNum != 0){
+        wx.showToast({
+          title: '分制必须被答题数整除!',
+          icon : 'none'
+        })
+        return false
+      }
+    }
+
     return true
   },
 

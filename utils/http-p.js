@@ -7,16 +7,17 @@ const tips = {
 }
 
 class HTTP{
-  request({url,data={},method='GET'}){
+  request({url,data={},method='GET',responseType='text'}){
     return new Promise((resolve,reject)=>{
-      this._request(url,resolve,reject,data,method)
+      this._request(url,resolve,reject,data,method,responseType)
     })
   }
-  _request(url,resolve,reject,data={},method='GET'){
+  _request(url,resolve,reject,data={},method='GET',responseType){
     wx.request({
       url: config.api_base_url+url,
       method:method,
       data:data,
+      responseType : responseType,
       header:{
         'content-type':'application/json',
         'appkey':config.appkey

@@ -1,4 +1,5 @@
 import {TitleModel} from '../../models/title'
+let stringUtil = require('../../utils/stringUtil')
 let titleModel =  new TitleModel()
 
 Page({
@@ -9,7 +10,7 @@ Page({
   data: {
     surveyId : String,
     titleList : Object,
-    currentTitle : Object,
+    currentTitle : null,
     itemSelected : false,
     select : false,
     tipText : '请选择',
@@ -21,12 +22,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    /*
-    if(titleType == 'multiple'){
-      wx.setNavigationBarTitle({
-        title: '选择姓名列',
-      })
-    }*/
     wx.setNavigationBarTitle({
       title: '选择姓名列',
     })
@@ -36,6 +31,13 @@ Page({
     this._getTitleList()
   },
   submit : function(e){
+    if(stringUtil.isNull(this.data.currentTitle)){
+      wx.showToast({
+        title: '您没有选择姓名列',
+        icon : 'none'
+      })
+      return
+    }
     const pages = getCurrentPages()
     let prevPage = pages[pages.length-2]
     prevPage.setData({

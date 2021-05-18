@@ -1,4 +1,5 @@
 import {SurveyModel} from '../../models/survey-p'
+import {config} from '../../config.js'
 let surveyModel = new SurveyModel();
 Page({
 
@@ -14,7 +15,8 @@ Page({
     unfoldInx: 0,
     maskHiddenFlag:true,
     statisticTitle : Object,
-    byNameStatistics : false
+    byNameStatistics : false,
+    imgVisitUrl : config.img_visit_url
   },
 
   /**
@@ -51,10 +53,47 @@ Page({
       maskHiddenFlag:true
     })
   },
+  exportExcel:function(){
+    
+    wx.navigateTo({
+      url: '/pages/export-title-sort/export-title-sort?surveyId='+this.data.surveyId+'&surveyName='+this.data.surveySummary.surveyName,
+    })
+    /*
+    wx.downloadFile({
+      url: 'http://192.168.43.128:8080/survey/download',
+      success:(res)=>{
+        console.log(res)
+        if(res.statusCode == 200){
+          let filePath = res.tempFilePath
+          wx.openDocument({
+            filePath: filePath,
+            success:function(res){
+              console.log('打开文档成功')
+            },
+            fail: function(res){
+              console.log(res)
+            },
+            complete: function(res){
+              console.log(res)
+            }
+          })
+        }       
+      },
+      fail:(res)=>{
+        
+      }
+    })*/ 
+  },
   textSummaryViewTap : function(event){
     const answerList = event.target.dataset.answerlist
     wx.navigateTo({
       url: `/pages/text-summary/text-summary?answerList=`+JSON.stringify(answerList)
+    })
+  },
+  imgSummaryViewTap : function(event){
+    const answerList = event.target.dataset.answerlist
+    wx.navigateTo({
+      url: `/pages/img-summary/img-summary?answerList=`+JSON.stringify(answerList)
     })
   },
   textNameStatisticsTap : function(event){
@@ -67,7 +106,26 @@ Page({
       url: `/pages/text-name-statistics/text-name-statistics?params=`+JSON.stringify(data)
     })
   },
-  
+  imgNameStatisticsTap : function(event){
+    const currentTapTitle = event.target.dataset.currenttaptitle
+    let data = {
+      'currentTapTitle' : currentTapTitle,
+      'statisticTitle' : this.data.statisticTitle
+    }
+    wx.navigateTo({
+      url: `/pages/img-name-statistics/img-name-statistics?params=`+JSON.stringify(data)
+    })
+  },
+  imgTap : function(event){
+    const fileName = event.currentTarget.dataset.filename
+    let that = this
+    wx.previewImage({
+      urls: [that.data.imgVisitUrl+fileName],
+    })
+  },
+  imageErr : function(event){
+    console.log(event)
+  },
   nameSelectionTap : function(event){
     wx.navigateTo({
       url: '/pages/title-selection/title-selection?surveyId='+this.data.surveyId,
@@ -109,20 +167,25 @@ Page({
       wx.showToast({
         title: '发生了一个错误，请联系管理员',
         icon : 'none'
-      })
-      /*
-      this.setData({
-        disabled : false,
-        add_btn_text : '保 存'
-      })*/
+      })  
     })
-    /*
-    surveyModel.getSurveySummary(this.data.surveyId,(res)=>{
-      this.setData({
-        surveySummary:res.data
-      })
+  },
+  _getSurveyByNameStatistics : function(){
+    wx.showLoading({
+      title: '加载中...',
     })
-    */ 
+    surveyModel.getSurveyStatics(this.data.surveyId,this.data.statisticTitle.id).then(res=>{
+      this.setData({
+        surveyStatistics:res.data
+      })
+      wx.hideLoading()
+    },res=>{
+      wx.hideLoading()
+      wx.showToast({
+        title: '发生了一个错误，请联系管理员',
+        icon : 'none'
+      })  
+    })
   },
   _getSurveySubmitDetail : function(){
     wx.showLoading({
@@ -155,6 +218,7 @@ Page({
     */
   },
   _getSurveyAll : function(){
+    console.log('getSurveyAll')
     wx.showLoading({
       title: '加载中...',
     })
@@ -174,11 +238,6 @@ Page({
         title: '发生了一个错误，请联系管理员',
         icon : 'none'
       })
-      /*
-      this.setData({
-        disabled : false,
-        add_btn_text : '保 存'
-      })*/
     })
     /*
     surveyModel.getSurveyStatics(this.data.surveyId,this.data.statisticTitle.id,(res)=>{
@@ -198,10 +257,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    //console.log('byNameStatistics')
+    // if(this.data.byNameStatistics){
+    //   this._getSurveyAll()
+    // }
     if(this.data.byNameStatistics){
-      //console.log(this.data.statisticTitle)
-      this._getSurveyAll()
+      this._getSurveyByNameStatistics()
     }
   },
 

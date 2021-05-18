@@ -2,7 +2,8 @@
 <view class='show-author' style='display:{{ismask}}'>
     <view class='show-author-title'>
       <text>三钢质计问卷调查需要获取您的微信昵称</text>
-      <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" bindtap='closeHide'>授权登录</button>
+      <button wx:if="{{canIUseGetUserProfile}}" disabled="{{isAuthorizing}}" bindtap="bindGetUserInfo"> 授 权 </button>
+      <button wx:else open-type="getUserInfo" disabled="{{isAuthorizing}}" bindgetuserinfo="bindGetUserInfo" bindtap='closeHide'>授 权</button>
     </view>
 </view>
 <wxs src="../../utils/filter.wxs" module="util" />
@@ -24,7 +25,7 @@
           <radio-group  data-titleId="{{title.id}}" bindchange="radioChange">
             <block wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id">
               <view class="option"> 
-                <radio  value="{{option.id}}" checked="{{option.selected}}" />
+                <radio bindtap="radiotap" data-titleId="{{title.id}}" data-optionId="{{option.id}}" value="{{option.id}}" checked="{{option.selected}}" />
                 <text>{{option.optionName}}</text>
               </view>           
             </block>
@@ -41,8 +42,26 @@
           </checkbox-group>        
         </view>
         <view wx:elif="{{title.titleType=='2'}}">
-        <textarea class="text-area" data-titleId="{{title.id}}" bindinput="inputChange"  maxlength="120" placeholder="请输入" value="{{title.text}}"></textarea>
-          <!-- <input data-titleId="{{title.id}}" bind:input="inputChange" class="text-input" placeholder="请填写">{{title.text}}</input> -->
+          <textarea class="text-area" data-titleId="{{title.id}}" bindinput="inputChange"  maxlength="120" placeholder="请输入" value="{{title.text}}"></textarea>
+        </view>
+        <view class="image-title" wx:elif="{{title.titleType=='3'}}">
+          <button data-titleId="{{title.id}}" class="image-upload-btn" hidden="{{!title.text==''}}" bindtap="chooseImage" style="width:100%;">选择图片</button>
+          <view class="image-view">
+            <image data-fileName="{{title.text}}" bindtap="previewImg" class="upload-image" hidden="{{title.text==''}}" mode="widthFix" src="{{title.text==''?'':imgVisitUrl+title.text}}"></image>
+            <image data-titleId="{{title.id}}" bindtap="deleteImageTap" class="delete-image" hidden="{{title.text==''}}" mode="widthFix" src="./images/delete.png"></image>
+            <view class="progress-mask" hidden="{{!imageUploading}}">
+              <text>{{progress+"%"}}</text>
+            </view>
+          <!--
+          <button data-titleId="{{title.id}}" class="image-upload-btn" hidden="{{!imageHidden}}" bindtap="chooseImage" style="width:100%;">选择图片</button>
+          <view class="image-view">
+            <image bindtap="previewImg" class="upload-image" hidden="{{imageHidden}}" mode="widthFix" src="{{photos}}"></image>
+            <image bindtap="deleteImage" class="delete-image" hidden="{{imageHidden}}" mode="widthFix" src="./images/delete.png"></image>
+            <view class="progress-mask" hidden="{{imageHidden}}">
+              <text>{{progress+"%"}}</text>
+            </view>-->
+          </view>
+          
         </view>
       </block>
     </view>

@@ -11,9 +11,57 @@ class TitleModel extends HTTP{
     })
   }
 
+  getTitleCount(surveyId){
+    return this.request({
+      url : 'title/get/count',
+      data : {
+        'surveyId' : surveyId
+      }
+    })
+  }
+
+  getTitlePage(surveyId,surveyType, pageSize, start){
+    return this.request({
+      url : 'title/get/page',
+      data : {
+        'surveyId' : surveyId,
+        'surveyType' : surveyType,
+        'pageSize' : pageSize,
+        'start' : start
+      }
+    })
+  }
+
+  getContestTitleList(surveyId,answerTitleNum){
+    return this.request({
+      url : 'title/contest/get',
+      data : {
+        'surveyId' : surveyId,
+        'answerTitleNum' : answerTitleNum
+      }
+    })
+  }
+
+  getTitleListBySurveyId(surveyId){
+    return this.request({
+      url : 'title/get/all',
+      data : {
+        'surveyId' : surveyId
+      }
+    })
+  }
+
   saveTitleModel(title){
     return this.request({
       url : 'title/save',
+      data :title,
+      method : 'POST'
+    })
+  }
+
+  saveTitleAnswerModel(title){
+    return this.request({
+      url : 'title/answer/save',
       data :title,
       method : 'POST'
     })
@@ -25,6 +73,14 @@ class TitleModel extends HTTP{
       data :title,
       method : 'POST'
     })
+  }
+
+  updateTitleAnswerModel(title){
+    return this.request({
+      url : 'title/answer/update',
+      data :title,
+      method : 'POST'
+    }) 
   }
 
   deleteTitleModel(title){

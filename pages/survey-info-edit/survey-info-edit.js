@@ -1,7 +1,8 @@
 import {SurveyModel} from '../../models/survey-p'
 
 let surveyModel = new SurveyModel();
-
+let SurveyType = require('../../common/js/SurveyType.js')
+let util = require('../../common/js/util.js')
 Page({
 
   /**
@@ -9,6 +10,7 @@ Page({
    */
   data: {
     survey : Object,
+    surveyNameLabel : '',
     submitBgColor: 'before-submit-bgcolor',
     disabled : false,
     saveBtnText : '保 存'
@@ -18,13 +20,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.setNavigationBarTitle({
-      title: '问卷信息编辑',
-    })
+    
     let survey = JSON.parse(options.survey)
     this.setData({
       survey
     })
+    if(SurveyType.isQuestionnaire(survey.surveyType)){
+      wx.setNavigationBarTitle({
+        title: '问卷信息编辑',
+      })
+      this.setData({
+        surveyNameLabel : '问卷名称'
+      })
+    }else{
+      wx.setNavigationBarTitle({
+        title: '知识竞赛信息编辑',
+      })
+      this.setData({
+        surveyNameLabel : '知识竞赛名称'
+      })
+    }
   }, 
 
   saveSurveyTap : function(e){
@@ -86,6 +101,24 @@ Page({
     })
   },
 
+  answerTitleNumInput : function(e){
+    let answerTitleNum =  e.detail.value
+    let survey = this.data.survey
+    survey.answerTitleNum = answerTitleNum
+    this.setData({
+      survey
+    })
+  },
+
+  scoreScaleInput : function(e){
+    let scoreScale =  e.detail.value
+    let survey = this.data.survey
+    survey.scoreScale = scoreScale
+    this.setData({
+      survey
+    })
+  },
+
   surveyNotesInput : function(e){
     let surveyNotes = e.detail.value
     let survey = this.data.survey
@@ -97,6 +130,7 @@ Page({
 
   checkDataIsLegal : function(){
     const surveyName = this.data.survey.surveyName
+    
     if(surveyName == null || surveyName == undefined || surveyName.trim() == '' ){
       wx.showToast({
         title: '问卷名称为必填选项！',
@@ -104,6 +138,36 @@ Page({
       })
       return false
     }
+
+    if(SurveyType.isKnowledgeCompetition(this.data.survey.surveyType)){
+      const answerTitleNum = this.data.survey.answerTitleNum
+      if(util.isNull(answerTitleNum)|| answerTitleNum <=0){
+        wx.showToast({
+          title: '答题数设置非法!',
+          icon : 'none'
+        })
+        return false
+      }
+    }
+
+    if(SurveyType.isKnowledgeCompetition(this.data.surveyType)){
+      let scoreScale = this.data.survey.scoreScale
+      if(util.isNull(scoreScale) ||  scoreScale <=0 ){
+        wx.showToast({
+          title: '分制设置非法!',
+          icon : 'none'
+        })
+        return false
+      }
+      if(scoreScale%this.data.survey.answerTitleNum != 0){
+        wx.showToast({
+          title: '分制必须被答题数整除!',
+          icon : 'none'
+        })
+        return false
+      }
+    }
+    
     return true
   },
 

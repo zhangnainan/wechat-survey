@@ -13,7 +13,14 @@
     "pages/title-create/title-create",
     "pages/title-edit/title-edit",
     "pages/survey-info-edit/survey-info-edit",
-    "pages/survey-settings/survey-settings"
+    "pages/survey-settings/survey-settings",
+    "pages/export-title-sort/export-title-sort",
+    "pages/img-summary/img-summary",
+    "pages/img-name-statistics/img-name-statistics",
+    "pages/home/home",
+    "pages/contest-title-import/contest-title-import",
+    "pages/contest-detail/contest-detail",
+    "pages/contest-rank/contest-rank"
   ],
   "window": {
     "backgroundTextStyle": "light",

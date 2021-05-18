@@ -9,7 +9,7 @@
           </view>
         </picker>
       </view>
-      <view class="split-line"></view>
+     <!-- <view class="split-line"></view>-->
       <view class="time-selection">
         <text>结束时间</text>
         <picker name="endDateTime" mode="multiSelector" value="{{endDateTime}}" bindchange="changeEndDateTime" bindcolumnchange="changeEndDateTimeColumn" range="{{endDateTimeArr}}">
@@ -18,7 +18,7 @@
           </view>
         </picker>
       </view>
-      <view class="split-line"></view>
+      <!--<view class="split-line"></view>-->
       <button style="width:100%" disabled="{{disabled}}" class="btn" form-type="submit">{{btnText}}</button>
     </form>
   </view>

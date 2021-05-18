@@ -1,6 +1,6 @@
 import {UserModel} from '../../models/user'
 var stringUtil = require('../../utils/stringUtil')
-let useModel =  new UserModel()
+let userModel =  new UserModel()
 Page({
 
   /**
@@ -33,12 +33,13 @@ Page({
       login_btn_text : '登录中...'
     })
 
-    useModel.login(this.data.username,this.data.password).then(res=>{
+    userModel.login(this.data.username,this.data.password).then(res=>{
       if(!stringUtil.isNull(res) && !stringUtil.isNull(res.message) && res.message == 'success'){
         let app = getApp()
         app.globalData.userId = res.data.id
         wx.redirectTo({
-          url: '/pages/survey/survey',
+          //url: '/pages/survey/survey'
+          url : '/pages/home/home'
         })
       }else{
         wx.showToast({

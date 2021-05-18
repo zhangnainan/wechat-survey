@@ -7,6 +7,9 @@
     <view class="survey-notes">
       {{survey.notes == '' || survey.notes == null ?'添加备注':survey.notes}}
     </view>
+    <view wx:if="{{surveyType=='knowledge-competition'}}" class="answer-title-num">
+      答题数:{{survey.answerTitleNum == undefined || survey.answerTitleNum == null ?0:survey.answerTitleNum}}
+    </view>
     <view wx:if="{{hiddenFlagMap[survey.id]}}" class="survey-buttons">
       <view bindtap="surveyNameEditTap" class="button">
         <image class="image" src="../survey-edit/images/edit.png"></image>
@@ -14,14 +17,19 @@
       </view>
     </view>
   </view>
-  <block wx:for="{{survey.titleList}}" wx:for-item="title" wx:key="id">
+  <block wx:for="{{titleList}}" wx:for-item="title" wx:key="id">
     <view class="title-container {{hiddenFlagMap[title.id]?'selected-container-border':''}}" data-id="{{title.id}}" bindtap="containerTap">
       <view class="title">
+        <!--
+        <block wx:if="{{title.required=='1'}}"><text decode="true">*&nbsp;</text></block>
+        {{title.titleSequence}}、{{title.title}}{{title.titleType == '1'?'（多选）':''}}
+        -->
         <view class="title-sequence-view">
           <view class="require-flag" wx:if="{{title.required=='1'}}"><text decode="true">*&nbsp;</text></view>
           <view class="title-sequence">{{title.titleSequence}}、</view>
         </view>
         <view class="title-name">{{title.title}}{{title.titleType == '1'?'（多选）':''}}</view>
+        
       </view>
       <view class="option-container" wx:if="{{title.titleType =='0' || title.titleType == '1'}}">
         <view wx:for="{{title.optionModelList}}" wx:for-item="option" wx:key="id" class="option">
@@ -33,6 +41,33 @@
       </view>
       <view class="text-container"  wx:if="{{title.titleType=='2'}}">
         <image class="text-image" src="./images/input.png" />
+      </view>
+      <view class="image-container"  wx:if="{{title.titleType=='3'}}">
+        <button style="width:100%">图 片 上 传</button>
+      </view>
+      <view class="answer-container" wx:if="{{title.answerModelList}}">
+        <view class="answer-list" wx:if="{{title.titleType =='0' || title.titleType == '1'}}">
+          <view>答案：
+            <block wx:for="{{title.answerModelList}}" wx:for-index="ansIdx"  >
+              <block wx:for="{{title.optionModelList}}" wx:for-item="optionModel" >
+                <block wx:if="{{item.answer == optionModel.id && ansIdx==0}}">
+                  {{optionModel.optionName}}
+                </block>
+                <block wx:if="{{item.answer == optionModel.id && ansIdx>0}}">
+                  <text style="color:#000;" decode="true">、</text>{{optionModel.optionName}}
+                </block>
+              </block>
+            </block>
+          </view>
+        </view>
+        <view wx:if="{{title.titleType == '2'}}" class="answer-list">
+          <view>答案：</view>
+          <block wx:for="{{title.answerModelList}}"   >
+            <view wx:if="{{index==0}}">{{item.answer}}</view>
+            <view wx:if="{{index>0}}"><text style="color:#000;" decode="true">、</text>{{item.answer}}</view>
+          </block>
+        </view>
+        
       </view>
       <view wx:if="{{hiddenFlagMap[title.id]}}" class="title-buttons">
         <view bindtap="titleEditTap" data-title="{{title}}" class="button">
@@ -46,23 +81,33 @@
       </view>
     </view>
   </block>
-  <view class="add-btn" bindtap="addBtnTap">添加题目</view> 
+  <!-- <view class="add-btn" bindtap="addBtnTap">添加题目</view> -->
+  <v-loading class="loading" wx:if="{{loadMore}}"/>
 </view>
+<v-loading class="loading-center"  wx:if="{{loadingCenter}}"/>
 <view bind:tap="maskTap" class="mask" hidden="{{maskFlag}}"  catchtouchmove='ture'>
-    <view class="buttons">
-      <view data-title-type="single" bindtap="addTitleTap">
-        <image src="./images/title_single.png"/>
-        <text>单选题</text>
-      </view>
-      <view data-title-type="multiple" bindtap="addTitleTap">
-        <image src="./images/title_multiple.png"/> 
-        <text>多选题</text>
-      </view>
-      <view data-title-type="text" bindtap="addTitleTap">
-        <image src="./images/title_text.png"/>
-        <text>填空题</text>
-      </view>
+  <view class="buttons">
+    <view data-title-type="single" bindtap="addTitleTap">
+      <image src="./images/title_single.png"/>
+      <text>单选</text>
     </view>
+    <view data-title-type="multiple" bindtap="addTitleTap">
+      <image src="./images/title_multiple.png"/> 
+      <text>多选</text>
+    </view>
+    <view data-title-type="text" bindtap="addTitleTap">
+      <image src="./images/title_text.png"/>
+      <text>填空</text>
+    </view>
+    <view wx:if="{{surveyType=='questionnaire'}}" data-title-type="image" bindtap="addTitleTap">
+      <image src="./images/title_image.png"/>
+      <text>图片</text>
+    </view>
+    <view wx:if="{{surveyType=='knowledge-competition'}}" data-title-type="file-import" bindtap="addTitleTap">
+      <image src="./images/file_import.png"/>
+      <text>文件导入</text>
+    </view>
+  </view>
 </view>
 
 <view class="nav-tabs">

@@ -1,0 +1,38 @@
+<view class="wrap">
+  <view wx:if="{{currentTapTitle.id == statisticTitle.id}}">
+    <view class="myTable">
+      <view class="myThead">
+        <view class="myTr">
+          <view class="myTd">序号</view>
+          <view style="width: 85%;" class="myTd">答案文本</view>
+        </view>
+      </view>
+      <view class="myTbody">
+        <view class="myTr" wx:for="{{currentTapTitle.textNameList}}" wx:for-item="textName" wx:key="*this">
+          <view class="myTd">{{index+1}}</view>
+          <view class="myTd">{{textName.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view wx:else >
+    <view class="myTable">
+      <view class="myThead">
+        <view class="myTr">
+          <view class="myTd">序号</view>
+          <view style="width: 60%;" class="myTd">图片</view>
+          <view style="width: 28%;" class="myTd">姓名</view>
+        </view>
+      </view>
+      <view class="myTbody">
+        <view class="myTr" wx:for="{{currentTapTitle.textNameList}}" wx:for-item="textName" wx:key="*this">
+          <view class="myTd">{{index+1}}</view>
+          <view class="myTd">
+            <image lazy-load="true" data-fileName="{{textName.text}}" bindtap="imgTap" class="img" mode="heightFix" src="{{imgVisitUrl+textName.text}}" />
+          </view>
+          <view class="myTd">{{textName.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

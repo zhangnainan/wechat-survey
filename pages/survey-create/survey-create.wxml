@@ -3,7 +3,7 @@
     <view class="sub-container">
       <view class="tag">
         <text decode="true" style="color:red;">&nbsp;*&nbsp;</text>
-        问卷名称：
+        {{surveyNameLabel}}：
       </view>
       <view class="survey-name">
         <textarea bindinput="surveyNameInput"  maxlength="30" placeholder="请输入" class="surveyname-textarea"></textarea>
@@ -11,6 +11,24 @@
     </view>
 
     <view class="sub-container">
+      <block wx:if="{{surveyType=='knowledge-competition'}}">
+        <view class="tag">
+          <text decode="true" style="color:red;">&nbsp;*&nbsp;</text>
+          答题数：
+        </view>
+        <view class="survey-name">
+          <textarea bindinput="answerTitleNumInput"  placeholder="请输入"  class="surveyname-textarea" maxlength="2"></textarea>
+        </view>
+      </block>
+      <block wx:if="{{surveyType=='knowledge-competition'}}">
+        <view class="tag">
+          <text decode="true" style="color:red;">&nbsp;*&nbsp;</text>
+          分制：
+        </view>
+        <view class="survey-name">
+          <textarea bindinput="scoreScaleInput"  placeholder="请输入"  class="surveyname-textarea" maxlength="3"></textarea>
+        </view>
+      </block>
       <view class="tag">备注：</view>
       <view class="survey-notes">
         <textarea bindinput="surveyNotesInput" class="weui-textarea" placeholder="请输入"  class="surveynotes-textarea" maxlength="500"></textarea>

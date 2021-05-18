@@ -1,5 +1,7 @@
+import util from '../../common/js/util'
 import {TitleModel} from '../../models/title'
 
+let SurveyType = require('../../common/js/SurveyType.js')
 let titleModel = new TitleModel()
 Page({
 
@@ -8,7 +10,11 @@ Page({
    */
   data: {
     add_btn_text : '保 存',
-    disabled : false
+    disabled : false,
+    titleType : String,
+    surveyType : String,
+    surveyId : String,
+    optionList : []
   },
 
   /**
@@ -17,6 +23,7 @@ Page({
   onLoad: function (options) {
     let param = JSON.parse(options.param)
     let titleType = param.titleType
+    let surveyType = param.surveyType
     if(titleType == 'single'){
       wx.setNavigationBarTitle({
         title: '单选题',
@@ -32,25 +39,72 @@ Page({
         title: '填空题',
       })
     }
+    if(titleType == 'image'){
+      wx.setNavigationBarTitle({
+        title: '图片上传题',
+      })
+    }
     let surveyId = param.surveyId
     this.setData({
-      titleType,
-      surveyId
+      titleType : titleType,
+      surveyId : surveyId,
+      surveyType : surveyType
     })
 
     if(titleType == 'single' || titleType == 'multiple'){
       let optionList = []
-      optionList.push({
-        'optionName' : ''
-      })
-      optionList.push({
-        'optionName' : ''
-      })
-      
+      if(SurveyType.isKnowledgeCompetition(surveyType)){
+        for(let i = 0; i < 2; i++){
+          optionList.push({
+            'optionName' : '',
+            'corrected' : false
+          })
+        }
+      }else{
+        for(let i = 0; i < 2; i++){
+          optionList.push({
+            'optionName' : ''
+          })
+        }
+      }
       this.setData({
         optionList
       })
     }
+  },
+
+  radioGroupChange : function(event){
+    console.log('radio group change ')
+    let index = event.detail.value
+    let optionList = this.data.optionList
+
+    for(let i = 0; i < optionList.length; i++){
+      let option = optionList[i]
+      if(index == i){
+        option.corrected = !option.corrected
+      }else{
+        option.corrected = false
+      }
+    }
+    this.setData({
+      optionList : optionList
+    })
+  },
+
+  checkboxGroupChange : function(event){
+    let indexList = event.detail.value
+    let optionlList = this.data.optionList
+    for(let i = 0; i < indexList.length; i++){
+      let optionModel = optionModelList[i]
+      if(indexList.includes(i)){
+        optionlList[i].corrected = true
+      }else{
+        optionlList[i].corrected = false
+      }
+    }
+    this.setData({
+      optionList : optionList
+    })
   },
 
   titleAddSubmit : function(e){
@@ -86,17 +140,42 @@ Page({
           return
         }
       }
+
+      if(SurveyType.isKnowledgeCompetition(this.data.surveyType)){
+        let optionList = this.data.optionList
+        let hasAnswer = false
+        for(let i = 0; i < optionList.length; i++){
+          let option = optionList[i]
+          if(option.corrected){
+            hasAnswer = true
+          }
+        }
+        if(!hasAnswer){
+          this.setData({
+            disabled : false,
+            add_btn_text : '保 存'
+          })
+          wx.showToast({
+            title: '未设置答案',
+            icon: 'none'
+          })
+          return
+        }
+      }
     }
     let titleType = ''
     if(this.data.titleType == 'single'){
       titleType = '0'
     }else if(this.data.titleType == 'multiple'){
       titleType = '1'
-    }else{
+    }else if(this.data.titleType == 'text'){
       titleType = '2'
+    }else{
+      titleType = '3'
     }
     let required = values.required
     let isNameColumn = values.isNameColumn
+    
     let title = {
       'title' : values.title,
       'titleType' : titleType,
@@ -105,43 +184,55 @@ Page({
       'surveyId' : this.data.surveyId
     }
 
+
     if(titleType == '0' || titleType == '1'){
       title.optionModelList = this.data.optionList
     }
-    titleModel.saveTitleModel(title).then(res=>{
-      let message = res.message
-      if(message == "success"){
-        /*
-        const pages = getCurrentPages()
-        let prevPage = pages[pages.length-2]
-        prevPage.setData({
-          isNavigateBack : true
-        })*/
-        wx.navigateBack({
-          delta:1
-        })
-      }else{
-        wx.showToast({
-          title: message,
-          icon : 'none'
-        })
+    if(titleType == '2' && SurveyType.isKnowledgeCompetition(this.data.SurveyType)){
+      let answer = values.answer
+      console.log('answer : '+answer)
+      if(util.isNull(answer)){
         this.setData({
           disabled : false,
           add_btn_text : '保 存'
         })
+        wx.showToast({
+          title: '未设置答案',
+          icon: 'none'
+        })
+        return
       }
-    },res=>{
-      wx.showToast({
-        title: '发生了一个错误，请联系管理员',
-        icon : 'none'
+      let answerModelList = []
+      answerModelList.push({
+        'answer' : answer
       })
-      this.setData({
-        disabled : false,
-        add_btn_text : '保 存'
-      })
-    })
+      title.answerModelList = answerModelList
+    }
+    
+    if(SurveyType.isKnowledgeCompetition(this.data.surveyType)){
+      this.saveTitleAnswerModel(title)
+    }else{
+      this.saveTitleModel(title)
+    }
     
   },
+
+  saveTitleModel : function(title){
+    titleModel.saveTitleModel(title).then(res=>{
+      this._saveSuccessCallback(res)
+    },res=>{
+      this._saveFailCallback(res)
+    })
+  },
+
+  saveTitleAnswerModel : function(title){
+    titleModel.saveTitleAnswerModel(title).then(res=>{
+      this._saveSuccessCallback(res)
+    },res=>{
+      this._saveFailCallback(res)
+    })
+  },
+
   deleteOptionTap : function(e){
     let index = e.currentTarget.dataset.index
     if(this.data.optionList.length <= 2){
@@ -180,6 +271,33 @@ Page({
     optionList[index].optionName = value
     this.setData({
       optionList
+    })
+  },
+  _saveSuccessCallback : function(res){
+    let message = res.message
+      if(message == "success"){
+        wx.navigateBack({
+          delta:1
+        })
+      }else{
+        wx.showToast({
+          title: message,
+          icon : 'none'
+        })
+        this.setData({
+          disabled : false,
+          add_btn_text : '保 存'
+        })
+      }
+  },
+  _saveFailCallback : function(res){
+    wx.showToast({
+      title: '发生了一个错误，请联系管理员',
+      icon : 'none'
+    })
+    this.setData({
+      disabled : false,
+      add_btn_text : '保 存'
     })
   },
 

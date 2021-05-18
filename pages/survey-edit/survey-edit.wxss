@@ -32,7 +32,7 @@ page {
   color:rgb(58, 168, 204);
 }
 
-.survey-notes{
+.survey-notes,.answer-title-num{
   color: #999;
   font-size: 30rpx;
   margin-top: 30rpx;
@@ -142,6 +142,33 @@ page {
   padding: 0rpx 30rpx 30rpx 30rpx;
 }
 
+.image-container{
+  padding: 0rpx 30rpx 30rpx 30rpx;
+}
+
+.image-container button{
+  padding : 0rpx;
+  border: 1rpx solid rgb(58, 168, 204);
+  color: rgb(58, 168, 204);
+  height: 65rpx;
+  line-height: 65rpx;
+  font-family: STKaiti;
+  background-color: white;
+}
+
+.answer-container{
+  padding: 0rpx 30rpx 30rpx 30rpx;
+  
+}
+
+.answer-list{
+  font-size: 28rpx;
+  color: rgb(58, 168, 204);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .text-image{
   height: 50rpx;
   width: 100%;
@@ -192,7 +219,7 @@ page {
 }
 
 .mask-bottom{
-  height: 250rpx;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -207,15 +234,19 @@ page {
   position: absolute;
   bottom: 0rpx;
   background-color: #ffffff;
-  height: 200rpx;
+  height: auto;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
 }
 
 .buttons view {
+  width: 33.3%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -279,3 +310,15 @@ page {
   display: none;
   flex: 1;
 }
+
+
+.loading {
+  margin: 50rpx 0 50rpx 0;
+}
+
+.loading-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+

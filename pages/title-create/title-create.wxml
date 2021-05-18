@@ -5,19 +5,49 @@
         <text decode="true"> * 标题</text>
       </view>
       <view class="title-name">
-        <textarea name="title"   maxlength="30" placeholder="请输入" class="titlename-textarea"></textarea>
+        <textarea name="title" auto-focus="true" auto-height="true"  maxlength="200" placeholder="请输入" class="titlename-textarea"></textarea>
       </view>
     </view>
     <view wx:if="{{titleType == 'single' || titleType == 'multiple'}}" class="label">
     选项 
     </view>
     <view wx:if="{{titleType == 'single' || titleType == 'multiple'}}" class="option-container">
+      <radio-group wx:if="{{titleType == 'single' && surveyType=='knowledge-competition'}}" bindchange="radioGroupChange">
+        <block wx:for="{{optionList}}" wx:for-item="option" >
+          <view class="option">
+            <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
+            <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="200" value="{{option.optionName}}" class="option-input"></input>
+            <radio value="{{index}}" checked="{{option.corrected}}"></radio>
+          </view>
+        </block>
+      </radio-group>
+      <checkbox-group wx:if="{{titleType == 'multiple' && surveyType=='knowledge-competition'}}" bindchange="checkboxGroupChange">
+        <block wx:for="{{optionList}}" wx:for-item="option" >
+          <view class="option">
+            <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
+            <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="200" value="{{option.optionName}}" class="option-input"></input>
+            <checkbox value="{{index}}" checked="{{option.corrected}}"></checkbox>  
+          </view>
+        </block>
+      </checkbox-group>
+      <block wx:if="{{surveyType!='knowledge-competition'}}" wx:for="{{optionList}}" wx:for-item="option" >
+        <view class="option">
+          <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
+          <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="200" value="{{option.optionName}}" class="option-input"></input>
+        </view>
+      </block>
+      <!--
       <block wx:for="{{optionList}}" wx:for-item="option"  wx:key="*this">
         <view class="option">
           <image data-index="{{index}}" bindtap="deleteOptionTap" class="image-delete" src="./images/delete.png"></image>
-          <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="50" value="{{option.optionName}}" class="option-input"></input>
+          <input data-index="{{index}}" bindinput="optionNameInput" name="option{{index}}" maxlength="200" value="{{option.optionName}}" class="option-input"></input>
+          <block wx:if="{{surveyType=='knowledge-competition'}}">
+            <checkbox  data-index="{{index}}"></checkbox>
+          </block>
+          
         </view>
       </block>
+      -->
       <!-- 
       <view class="option">
         <image class="image-delete" src="./images/delete.png"></image>
@@ -30,19 +60,32 @@
       </view>
     </view>
 
-    <view class="label">
-    设置 
-    </view>
-    <view class="setting-container">
-      <view class="setting">
-        <text>此题目必须作答</text>
-        <switch name="required" type="switch"></switch>
+    <block  wx:if="{{titleType == 'text' && surveyType=='knowledge-competition'}}" >
+      <view class="label">
+      答案： 
       </view>
-      <view wx:if="{{titleType == 'text'}}" class="setting">
-        <text>设置为姓名列</text>
-        <switch name="isNameColumn" type="switch"></switch>
+      <view class="text-title-answer-container">
+        <view class="title-name">
+          <textarea name="answer" bindinput="textTitleAnswerInput" auto-focus="true" style="height:3em"  auto-height="true"  maxlength="200"  class="titlename-textarea" ></textarea>
+        </view>
       </view>
-    </view>
+    </block>
+
+    <block wx:if="{{!(surveyType=='knowledge-competition')}}">
+      <view class="label">
+      设置 
+      </view>
+      <view class="setting-container" >
+        <view class="setting">
+          <text>此题目必须作答</text>
+          <switch name="required" type="switch"></switch>
+        </view>
+        <view wx:if="{{titleType == 'text'}}" class="setting">
+          <text>设置为姓名列</text>
+          <switch name="isNameColumn" type="switch"></switch>
+        </view>
+      </view>
+    </block>
 
     <view class="btn-container">
       <button style="width:100%;" class="btn-add" form-type="submit" disabled="{{disabled}}">{{add_btn_text}}</button>

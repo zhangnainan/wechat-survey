@@ -1,11 +1,21 @@
 import {HTTP} from '../utils/http-p.js'
 
 class SurveyModel extends HTTP{
-  getSurveyList(creator){
+  getSurveyList(creator,surveyType){
     return this.request({
       url:'survey/get/survey/list',
       data :{
-        'creator' : creator
+        'creator' : creator,
+        'surveyType' : surveyType
+      }
+    })
+  }
+
+  getSurveyInfo(surveyId){
+    return this.request({
+      url : 'survey/get/survey/info',
+      data :{
+        'surveyId' : surveyId
       }
     })
   }
@@ -17,12 +27,13 @@ class SurveyModel extends HTTP{
     })
   }
 
-  loadSurveyByIdAndUserNickName(surveyId,wxNickname){
+  loadSurveyByIdAndUserNickName(surveyId, wxNickname, wxOpenId){
     return this.request({
-      url : 'survey/load/survey',
+      url : encodeURI('survey/load/survey'),
       data:{
-        'surveyId' : surveyId,
-        'wxNickname' : wxNickname
+        'surveyId'   : surveyId,
+        'wxNickname' : wxNickname,
+        'wxOpenId'   : wxOpenId
       }
     })
   }
@@ -43,11 +54,20 @@ class SurveyModel extends HTTP{
     })
   }
 
-  submitSurvey(survey, wxNickname){
+  submitSurvey(survey, wxNickname, wxOpenId){
+    
     return this.request({
-      url:'survey/submit/survey?wxNickname='+wxNickname,
+      url:encodeURI('survey/submit/survey?wxNickname='+wxNickname+'&wxOpenId='+wxOpenId),
       method:'POST',
       data:survey
+    })
+  }
+  
+  submitContest(titleList, surveyId,submitter, timeCount,wxNickname, wxOpenId){
+    return this.request({
+      url:encodeURI('survey/submit/contest?surveyId='+surveyId+'&submitter='+submitter+'&timeCount='+timeCount+'&wxNickname='+wxNickname+'&wxOpenId='+wxOpenId),
+      method:'POST',
+      data:titleList
     })
   }
 
@@ -75,14 +95,17 @@ class SurveyModel extends HTTP{
       }
     })
   }
-
-  saveSurvey(creator,surveyName,surveyNotes){
+  
+  saveSurvey(creator,surveyName,surveyNotes,surveyType,answerTitleNum,scoreScale){
     return this.request({
       url : 'survey/save/survey',
       data : {
         'creator' : creator,
         'surveyName' : surveyName,
-        'notes' : surveyNotes
+        'notes' : surveyNotes,
+        'surveyType' : surveyType,
+        'answerTitleNum' : answerTitleNum,
+        'scoreScale' : scoreScale
       },
       method : 'POST'
     })
@@ -101,6 +124,24 @@ class SurveyModel extends HTTP{
       url : 'survey/update/survey/time/setting',
       data : survey,
       method : 'POST'
+    })
+  }
+
+  exportExcel(surveyId, sortCols,titleList){
+    return this.request({
+      url:'survey/export/excel?surveyId='+surveyId+'&sortCols='+sortCols,
+      method:'POST',
+      data:titleList,
+      responseType : 'arraybuffer'
+    })
+  }
+
+  getOpenId(code){
+    return this.request({
+      url : 'survey/get/openid',
+      data : {
+        code : code
+      }
     })
   }
 
